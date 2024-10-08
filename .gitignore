@@ -1,0 +1,13 @@
+# Ignore the virtual environment folder
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Python specific ignores
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
