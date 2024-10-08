@@ -2,10 +2,23 @@
 <html>
 <head> 
     <title>ROVER COMMAND CENTER</title>
+    <script>
+        function sendCommand(command) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/send_command/' + command, true);
+            xhr.send();
+        }
+    </script>
 </head>
 <body>
     <div style="background-color: rgb(26, 26, 26); height: 50px; display: flex; align-items: center; justify-content: center;">
         <h1 style="text-align: center; color: white;">ROVER COMMAND CENTER</h1>
+    </div>
+    
+    <!-- Servo control buttons -->
+    <div style="text-align: center; margin-top: 50px;">
+        <button onclick="sendCommand('increase')">Increase Servo Angle</button>
+        <button onclick="sendCommand('decrease')">Decrease Servo Angle</button>
     </div>
 </body>
 </html>
