@@ -44,4 +44,4 @@ def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(debug=True, host=PI_HOST, port=5000, threaded=True)
+    app.run(debug=True, host=PI_HOST, port=5000)
