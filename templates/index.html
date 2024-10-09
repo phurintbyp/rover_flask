@@ -3,23 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROVER COMMAND CENTER</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>Camera Feed</title>
 </head>
 <body>
-    <h1>ROVER COMMAND CENTER</h1>
-    
-    <!-- Servo control buttons -->
-    <div style="text-align: center; margin-top: 50px;">
-        <button onclick="sendCommand('i')">Increase Servo Angle</button>
-        <button onclick="sendCommand('d')">Decrease Servo Angle</button>
-        <!-- Add any additional control buttons here -->
-    </div>
-
-    <!-- Camera feed -->
-    <div id="camera-feed" style="text-align: center; margin-top: 50px;">
-        <img src="{{ url_for('video_feed') }}" alt="Camera Feed" style="width: 640px; height: 480px;">
-    </div>
+    <h1>Camera Feed</h1>
+    <img src="{{ url_for('video_feed') }}" alt="Video Stream" style="width: 640px; height: 480px;">
 </body>
 </html>

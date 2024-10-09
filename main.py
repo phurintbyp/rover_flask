@@ -1,33 +1,37 @@
-# main.py
+#!/usr/bin/env python
+# -*- coding: utf-8 -*
+
 from flask import Flask, render_template, Response
-import smbus2
-from camera import Camera  # Import the Camera class from camera.py
+from picamera2 import Picamera2
+import cv2
 
 app = Flask(__name__)
 
-# Change to IP address of the Raspberry Pi
-PI_HOST = '0.0.0.0'
+# Initialize the camera
+camera = Picamera2()
+camera.configure(camera.create_preview_configuration(main={"size": (640, 480)}))
+camera.start()
 
-# bus = smbus2.SMBus(1)
-# ARDUINO_ADDRESS = 0x08
-camera = Camera()  # Create a Camera object
+@app.route('/')
+def index():
+    """Video streaming home page."""
+    return render_template('index.html')
 
-# def send_data(data):
-#     with smbus2.SMBus(1) as bus:
-#         bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(c) for c in data])
-
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
-
-# @app.route('/send_command/<command>')
-# def handle_command(command):
-#     send_data(command)
-#     return f"Command '{command}' sent to Arduino."
+def generate_frames():
+    """Video streaming generator function."""
+    while True:
+        frame = camera.capture_array()  # Capture the frame
+        ret, jpeg = cv2.imencode('.jpg', frame)  # Encode as JPEG
+        if not ret:
+            continue  # If encoding fails, skip this iteration
+        frame = jpeg.tobytes()  # Convert to bytes for streaming
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(camera.generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(debug=True, host=PI_HOST, port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
