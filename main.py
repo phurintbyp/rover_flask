@@ -2,7 +2,8 @@ from flask import Flask, render_template, Response
 import smbus2
 import time
 import io
-import picamera
+from picamera2 import Picamera2
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -10,7 +11,6 @@ app = Flask(__name__)
 PI_HOST = '0.0.0.0'
 
 bus = smbus2.SMBus(1)
-
 ARDUINO_ADDRESS = 0x08  # I2C address of Arduino
 
 def send_data(data):
@@ -18,16 +18,19 @@ def send_data(data):
         bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(c) for c in data])
 
 def generate_frames():
-    with picamera.PiCamera() as camera:
-        camera.resolution = (640, 480)
-        camera.framerate = 24
-        stream = io.BytesIO()
+    picam2 = Picamera2()  # Initialize Picamera2
+    config = picam2.create_video_configuration(main={"size": (640, 480)})
+    picam2.configure(config)
+    picam2.start()
 
-        for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
-            stream.seek(0)
-            yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + stream.read() + b'\r\n'
-            stream.seek(0)
-            stream.truncate()
+    while True:
+        frame = picam2.capture_array()
+        img = Image.fromarray(frame)
+        stream = io.BytesIO()
+        img.save(stream, 'JPEG')
+        stream.seek(0)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + stream.read() + b'\r\n')
 
 @app.route('/')
 def index():
