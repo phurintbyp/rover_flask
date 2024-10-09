@@ -5,7 +5,7 @@ function sendCommand(command) {
 }
 
 function displayWebcamFeed() {
-    const webcamFeedUrl = 'http://<raspberry_pi_ip>:8080/stream';
+    const webcamFeedUrl = 'http://192.168.0.152:8080/stream';
     const webcamFeedDiv = document.getElementById('camera-feed');
     const webcamImage = document.createElement('img');
     webcamImage.src = webcamFeedUrl;
