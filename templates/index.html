@@ -3,10 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Feed</title>
+    <title>Rover Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+        #camera-feed {
+            margin: 20px 0;
+        }
+        img {
+            border: 2px solid #555;
+            border-radius: 8px;
+            width: 640px;
+            height: 480px;
+        }
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        .control-button {
+            padding: 15px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .control-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Camera Feed</h1>
-    <img src="{{ url_for('video_feed') }}" alt="Video Stream" style="width: 640px; height: 480px;">
+    <h1>Rover Control Panel</h1>
+    
+    <div id="camera-feed">
+        <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+    </div>
+
+    <div class="control-panel">
+        <button class="control-button" onclick="sendCommand('w')">Forward</button>
+        <button class="control-button" onclick="sendCommand('s')">Reverse</button>
+        <button class="control-button" onclick="sendCommand('a')">Left</button>
+        <button class="control-button" onclick="sendCommand('d')">Right</button>
+        <button class="control-button" onclick="sendCommand('h')">Stop</button>
+        <button class="control-button" onclick="sendCommand('i')">Increase Servo</button>
+        <button class="control-button" onclick="sendCommand('k')">Decrease Servo</button>
+    </div>
+
+    <script>
+        function sendCommand(command) {
+            fetch(`/send_command/${command}`);
+        }
+    </script>
 </body>
 </html>
