@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*
-
 from flask import Flask, render_template, Response
 from picamera2 import Picamera2
 import cv2
@@ -8,16 +5,22 @@ import cv2
 app = Flask(__name__)
 
 # Initialize the camera
-try:
-    camera = Picamera2()
-    camera.configure(camera.create_preview_configuration(main={"size": (640, 480)}))
-    camera.start()
-except Exception as e:
-    print(f"Camera init error: {e}")
+camera = None
+
+def initialize_camera():
+    global camera
+    if camera is None:
+        try:
+            camera = Picamera2()
+            camera.configure(camera.create_preview_configuration(main={"size": (640, 480)}))
+            camera.start()
+        except Exception as e:
+            print(f"Camera init error: {e}")
 
 @app.route('/')
 def index():
     """Video streaming home page."""
+    initialize_camera()  # Ensure camera is initialized
     return render_template('index.html')
 
 def generate_frames():
@@ -40,7 +43,8 @@ def generate_frames():
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
+    initialize_camera()  # Ensure camera is initialized before streaming
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
