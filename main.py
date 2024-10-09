@@ -21,9 +21,15 @@ def generate_frames():
     """Video streaming generator function."""
     while True:
         frame = camera.capture_array()  # Capture the frame
-        ret, jpeg = cv2.imencode('.jpg', frame)  # Encode as JPEG
+        if frame is None or frame.size == 0:
+            print("Error: Captured frame is empty.")
+            continue  # Skip this iteration if frame capture failed
+        
+        ret, jpeg = cv2.imencode('.jpg', frame)  # Encode the frame
         if not ret:
-            continue  # If encoding fails, skip this iteration
+            print("Error: Frame could not be encoded.")
+            continue  # Skip this iteration if encoding fails
+        
         frame = jpeg.tobytes()  # Convert to bytes for streaming
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
