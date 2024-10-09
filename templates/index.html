@@ -14,11 +14,12 @@
     <div style="text-align: center; margin-top: 50px;">
         <button onclick="sendCommand('i')">Increase Servo Angle</button>
         <button onclick="sendCommand('d')">Decrease Servo Angle</button>
+        <!-- Add any additional control buttons here -->
     </div>
 
     <!-- Camera feed -->
     <div id="camera-feed" style="text-align: center; margin-top: 50px;">
-        <!-- The camera feed will be injected here -->
+        <img src="{{ url_for('video_feed') }}" alt="Camera Feed" style="width: 640px; height: 480px;">
     </div>
 </body>
 </html>
