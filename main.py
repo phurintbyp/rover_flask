@@ -12,7 +12,7 @@ def initialize_camera():
     if camera is None:
         try:
             camera = Picamera2()
-            camera.configure(camera.create_preview_configuration(main={"format":'XRGB8888', "size": (640, 480)}))
+            camera.configure(camera.create_preview_configuration(main={"format":'XRGB8888', "size": (320, 240)}))
             camera.start()
         except Exception as e:
             print(f"Camera init error: {e}")
