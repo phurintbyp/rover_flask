@@ -8,9 +8,12 @@ import cv2
 app = Flask(__name__)
 
 # Initialize the camera
-camera = Picamera2()
-camera.configure(camera.create_preview_configuration(main={"size": (640, 480)}))
-camera.start()
+try:
+    camera = Picamera2()
+    camera.configure(camera.create_preview_configuration(main={"size": (640, 480)}))
+    camera.start()
+except Exception as e:
+    print(f"Camera init error: {e}")
 
 @app.route('/')
 def index():
