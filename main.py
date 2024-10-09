@@ -15,7 +15,9 @@ bus = smbus2.SMBus(1)
 ARDUINO_ADDRESS = 0x08  # I2C address of Arduino
 
 camera = Picamera2()
-camera.configure(camera.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
+# camera.configure(camera.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
+camera_config = camera.create_preview_configuration()
+camera.configure(camera_config)
 camera.start()
 
 def send_data(data):
