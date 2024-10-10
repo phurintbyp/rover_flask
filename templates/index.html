@@ -67,10 +67,6 @@
         <button class="control-button" onclick="sendCommand('k')">Decrease Servo</button>
     </div>
 
-    <script>
-        function sendCommand(command) {
-            fetch(`/send_command/${command}`);
-        }
-    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
