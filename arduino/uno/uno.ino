@@ -21,6 +21,7 @@ void setup() {
 }
 
 void loop() {
+  String message = "";
   String readString;
   String Q;
 
@@ -35,20 +36,22 @@ void loop() {
 
   previous_error = error;
 
-  // Apply output to control (e.g., motor or LED)
-  if (output > 0) {
-    digitalWrite(13, HIGH);  // Example control, turn on LED
-  } else {
-    digitalWrite(13, LOW);   // Example control, turn off LED
-  }
+  // Print the distance and PID output to the serial monitor
+  message = "Distance: " + String(distance) + " cm, PID output: " + String(output);
+  Serial.println(message);
 
-  // Optional: Print the distance and PID output
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.print(" cm, PID output: ");
-  Serial.println(output);
-  
-  delay(100);
+  // Handle Serial input to control the LED
+  while (Serial.available()) {
+    delay(1); // Small delay to ensure the data is available
+    if (Serial.available() > 0) {
+      char c = Serial.read();  // Get one byte from the serial buffer
+      if (isControl(c)) {
+        break;
+      }
+      readString += c; // Append character to the string
+    }
+  }
+  delay(100); // Delay to prevent flooding the serial output
 }
 
 // Function to read distance from ultrasonic sensor
