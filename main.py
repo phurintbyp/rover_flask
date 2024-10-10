@@ -65,9 +65,11 @@ def request_data():
     bus.write_byte(ARDUINO_ADDRESS, 0)  # Sending a dummy byte to request data
     time.sleep(0.1)  # Allow some time for Arduino to prepare the data
 
-    # Assuming you have a function to read the data from Arduino
     data = bus.read_i2c_block_data(ARDUINO_ADDRESS, 0, 32)  # Adjust size as needed
-    return jsonify({"data": ''.join(chr(i) for i in data if i > 0)})  # Convert byte data to string
+    # Filter out non-printable characters
+    filtered_data = ''.join(chr(i) for i in data if 32 <= i <= 126)  # ASCII printable range
+    return jsonify({"data": filtered_data})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
