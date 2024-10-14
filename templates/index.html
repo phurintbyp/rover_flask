@@ -138,12 +138,51 @@
         });
 
         // Function to simulate sending the path to the rover
-        function sendPathToRover(start, end) {
-            console.log("Sending path from", start, "to", end);
+        function sendPathToRover(start, destination) {
+            console.log("Sending path from", start, "to", destination);
 
-            // Here, you can use your rover control logic to move the rover along the path
-            // and update the roverMarker position as it moves
+            // Get route waypoints from the Leaflet Routing Machine control
+            var waypoints = routeControl.getWaypoints();
+
+            console.log({waypoints});
+            
+            // Check if we have a valid route
+            if (waypoints.length < 2) {
+                console.error("No valid route found.");
+                return;
+            }
+
+            // Extract lat-lng coordinates for the waypoints
+            var pathCoordinates = waypoints.map(function(waypoint) {
+                return {
+                    lat: waypoint.latLng.lat,
+                    lng: waypoint.latLng.lng
+                };
+            });
+
+            console.log("Path coordinates to send to the rover:", pathCoordinates);
+
+            // Simulate sending the waypoints to the rover
+            sendWaypointsToRover(pathCoordinates);
+
+            // Start tracking the rover's movement
+            trackRoverMovement(pathCoordinates);
         }
+
+        function sendWaypointsToRover(waypoints) {
+            // Simulate API call or command to send waypoints to the rover's control system
+            console.log("Sending waypoints to rover:", waypoints);
+
+            // Here you can send an HTTP request to your backend, e.g.:
+            // axios.post('/api/send-waypoints', { waypoints: waypoints })
+            // .then(response => console.log("Rover acknowledged waypoints", response))
+            // .catch(error => console.error("Error sending waypoints", error));
+        }
+        
+        function trackRoverMovement(waypoints) {
+            console.log("Tracking rover movement");
+        }
+
 
         // Simulate rover movement by updating the marker position
         function updateRoverPosition(newCoords) {
