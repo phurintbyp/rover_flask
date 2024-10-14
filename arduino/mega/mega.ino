@@ -18,9 +18,14 @@ void loop() {
 }
 
 void receiveData(int byteCount) {
+  receivedData = "";
   while (Wire.available()) {
     char c = Wire.read();  // Read one byte
-    receivedData += c;     // Append it to the receivedData string
+    if (c == '\n') {  // Check if the end of the string has been reached
+      receivedData = "";  // Clear the buffer for the next message
+    } else {
+      receivedData += c;  // Append the character to the buffer
+    }
   }
   Serial.println(receivedData);
   if (isCoordinateString(receivedData)) {
