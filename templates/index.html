@@ -144,13 +144,19 @@
             // Get route waypoints from the Leaflet Routing Machine control
             var waypoints = routeControl.getWaypoints();
 
-            console.log("Waypoints: ", {waypoints});
-            
             // Check if we have a valid route
             if (waypoints.length < 2) {
                 console.error("No valid route found.");
                 return;
             }
+
+            // Print the waypoints to console
+            waypoints.forEach((waypoint, index) => {
+                console.log(`Waypoint ${index}:`, {
+                    lat: waypoint.latLng.lat,
+                    lng: waypoint.latLng.lng
+                });
+            });
 
             // Extract lat-lng coordinates for the waypoints
             var pathCoordinates = waypoints.map(function(waypoint) {
@@ -168,6 +174,7 @@
             // Start tracking the rover's movement
             trackRoverMovement(pathCoordinates);
         }
+
 
         function sendWaypointsToRover(waypoints) {
             // Simulate API call or command to send waypoints to the rover's control system
