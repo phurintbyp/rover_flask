@@ -96,7 +96,7 @@
     <!-- Initialize the map and routing -->
     <script>
         // Set initial coordinates of the rover
-        var roverCoords = [51.505, -0.09];  // This should be updated with actual rover coordinates
+        var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
 
         var map = L.map('map').setView(roverCoords, 13); // Set initial view to rover's location
 
@@ -150,12 +150,6 @@
             roverMarker.setLatLng(newCoords);  // Update rover marker position
             map.setView(newCoords, 13);  // Center map on the new position
         }
-
-        // Example: Updating the rover position after some time (simulate real-time movement)
-        setTimeout(function() {
-            var newCoords = [51.51, -0.08];  // New coordinates for the rover (update this dynamically)
-            updateRoverPosition(newCoords);
-        }, 5000);  // Update after 5 seconds (for testing)
     </script>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
