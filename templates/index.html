@@ -122,25 +122,25 @@
             routeControl = L.Routing.control({
                 waypoints: [
                     L.latLng(roverCoords), // Start at the rover's current position
-                    L.latLng(destination)  // End at the clicked location
+                    L.latLng(destination)   // End at the clicked location
                 ],
+                routeWhileDragging: true,  // Optional: Updates route while dragging
                 createMarker: function(i, waypoint, n) {
                     if (i === 0) {
                         return L.marker(waypoint.latLng).bindPopup("Rover Start");
                     } else if (i === n - 1) {
                         return L.marker(waypoint.latLng).bindPopup("Target Location");
                     }
-                }
+                },
+                // You can add routing options here if needed
             }).addTo(map);
 
             // Call function to send this path to the rover
-            sendPathToRover(roverCoords, destination);
+            sendPathToRover(); // No need to pass start and destination here
         });
 
-        // Function to simulate sending the path to the rover
-        function sendPathToRover(start, destination) {
-            console.log("Sending path from", start, "to", destination);
 
+        function sendPathToRover() {
             // Get route waypoints from the Leaflet Routing Machine control
             var waypoints = routeControl.getWaypoints();
 
@@ -174,6 +174,7 @@
             // Start tracking the rover's movement
             trackRoverMovement(pathCoordinates);
         }
+
 
 
         function sendWaypointsToRover(waypoints) {
