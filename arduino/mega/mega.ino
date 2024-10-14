@@ -21,23 +21,11 @@ void receiveData(int byteCount) {
   receivedData = "";
   while (Wire.available()) {
     char c = Wire.read();  // Read one byte
-    if (c == '\n') {  // Check if the end of the string has been reached
-      receivedData = "";  // Clear the buffer for the next message
-    } else {
-      receivedData += c;  // Append the character to the buffer
+    if (c >= 32 && c <= 126) {
+      receivedData += c;  // Append the valid character to the buffer
     }
   }
   Serial.println(receivedData);
-  if (isCoordinateString(receivedData)) {
-    // Parse and handle the coordinates
-    float latitude, longitude;
-    sscanf(receivedData.c_str(), "lat: %f, long: %f", &latitude, &longitude);
-    Serial.print("Received Coordinates - Latitude: ");
-    Serial.print(latitude);
-    Serial.print(", Longitude: ");
-    Serial.println(longitude);
-    // You can now use latitude and longitude for further processing
-  }
 
   if (receivedData == 'w') {
     digitalWrite(13, HIGH);
@@ -45,7 +33,6 @@ void receiveData(int byteCount) {
     digitalWrite(13, LOW);
   }
 }
-
 
 bool isCoordinateString(const String& str) {
   return str.startsWith("lat: ") && str.indexOf("long:") != -1;
