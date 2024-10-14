@@ -12,6 +12,13 @@ bus = smbus2.SMBus(1)  # Initialize the bus here
 def send_data(data):
     bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(data)])  # Send the single character as its ASCII value
 
+def send_string(data):
+    # Convert each character in the string to its ASCII value
+    ascii_values = [ord(char) for char in data]
+    
+    # Send the list of ASCII values
+    bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, ascii_values)
+
 
 # Initialize the camera
 camera = None
@@ -57,8 +64,7 @@ def generate_frames():
 @app.route('/send_coords/<lat>/<long>')
 def handle_coords(lat, long):
     data = ("lat: ", lat, ", lng: ", long)
-    for char in data :
-        send_data(char)
+    send_string(char)
     return f"Coords {data} sent to the Arduino"
 
 @app.route('/video_feed')

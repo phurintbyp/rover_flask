@@ -134,15 +134,10 @@
                 },
             }).on('routesfound', function(e) {
                 console.log(e);
-                const coordinates = e.routes[0].coordinates;
-                
-                coordinates.forEach(function(coord, index) {
-                    // Set a timeout for each coordinate based on its index
-                    setTimeout(function() {
-                        sendCoords(coord.lat, coord.lng);
-                        console.log("Coords sent!\nlat: ", coord.lat, "\nlong: ", coord.lng);
-                    }, index * 1000); // Adjust 1000 ms (1 second) as needed
-                });
+                e.routes[0].coordinates.forEach(function(coord, index) {
+                    sendCoords(coord.lat, coord.lng);
+                    console.log("Coords sent!\nlat: ", coord.lat, "\nlong: ", coord.lng);
+                })
             }).addTo(map);
         });
 
