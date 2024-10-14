@@ -53,7 +53,19 @@
             font-size: 18px;
             color: #333;
         }
+        #map {
+            height: 400px;
+            width: 100%;
+            max-width: 640px;
+            margin: 20px 0;
+        }
     </style>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
+    <!-- Leaflet Routing Machine CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
 </head>
 <body>
     <h1>Rover Control Panel</h1>
@@ -61,6 +73,9 @@
     <div id="camera-feed">
         <img src="{{ url_for('video_feed') }}" alt="Video Stream">
     </div>
+
+    <!-- Map Container -->
+    <div id="map"></div>
 
     <div class="control-panel">
         <button class="control-button" onclick="sendCommand('w')">Forward</button>
@@ -71,6 +86,78 @@
         <button class="control-button" onclick="sendCommand('i')">Increase Servo</button>
         <button class="control-button" onclick="sendCommand('k')">Decrease Servo</button>
     </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <!-- Leaflet Routing Machine JS -->
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+    <!-- Initialize the map and routing -->
+    <script>
+        // Set initial coordinates of the rover
+        var roverCoords = [51.505, -0.09];  // This should be updated with actual rover coordinates
+
+        var map = L.map('map').setView(roverCoords, 13); // Set initial view to rover's location
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Marker for the rover
+        var roverMarker = L.marker(roverCoords).addTo(map).bindPopup("Rover is here").openPopup();
+
+        var routeControl;
+
+        // Listen for map clicks to set a destination
+        map.on('click', function(e) {
+            var destination = e.latlng;
+
+            if (routeControl) {
+                map.removeControl(routeControl); // Remove existing route if any
+            }
+
+            // Create a new route
+            routeControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(roverCoords), // Start at the rover's current position
+                    L.latLng(destination)  // End at the clicked location
+                ],
+                createMarker: function(i, waypoint, n) {
+                    if (i === 0) {
+                        return L.marker(waypoint.latLng).bindPopup("Rover Start");
+                    } else if (i === n - 1) {
+                        return L.marker(waypoint.latLng).bindPopup("Target Location");
+                    }
+                }
+            }).addTo(map);
+
+            // Call function to send this path to the rover
+            sendPathToRover(roverCoords, destination);
+        });
+
+        // Function to simulate sending the path to the rover
+        function sendPathToRover(start, end) {
+            console.log("Sending path from", start, "to", end);
+
+            // Here, you can use your rover control logic to move the rover along the path
+            // and update the roverMarker position as it moves
+        }
+
+        // Simulate rover movement by updating the marker position
+        function updateRoverPosition(newCoords) {
+            roverMarker.setLatLng(newCoords);  // Update rover marker position
+            map.setView(newCoords, 13);  // Center map on the new position
+        }
+
+        // Example: Updating the rover position after some time (simulate real-time movement)
+        setTimeout(function() {
+            var newCoords = [51.51, -0.08];  // New coordinates for the rover (update this dynamically)
+            updateRoverPosition(newCoords);
+        }, 5000);  // Update after 5 seconds (for testing)
+    </script>
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
