@@ -13,6 +13,7 @@ def send_data(data):
     bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(data)])  # Send the single character as its ASCII value
 
 def send_string(data):
+    ascii_values = []
     # Convert each character in the string to its ASCII value
     ascii_values = [ord(char) for char in data]
     
