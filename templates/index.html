@@ -132,13 +132,13 @@
                         return L.marker(waypoint.latLng).bindPopup("Target Location");
                     }
                 },
-                // You can add routing options here if needed
-            }).on('routesfound', function(e) {  // Use curly braces instead of parentheses
-                console.log(e);  // Correctly logs the event object
+            }).on('routesfound', function(e) {
+                console.log(e);
+                e.routes[0].coordinates.forEach(function(coord, index) {
+                    sendCoords(coord.lat, coord.lng);
+                    console.log("Coords sent!\nlat: ", coord.lat, "\nlong: ", coord.lng);
+                })
             }).addTo(map);
-
-            // Call function to send this path to the rover
-            sendPathToRover(); // No need to pass start and destination here
         });
 
 
@@ -152,14 +152,6 @@
                 console.error("No valid route found.");
                 return;
             }
-
-            // Print the waypoints to console
-            waypoints.forEach((waypoint, index) => {
-                console.log(`Waypoint ${index}:`, {
-                    lat: waypoint.latLng.lat,
-                    lng: waypoint.latLng.lng
-                });
-            });
 
             // Extract lat-lng coordinates for the waypoints
             var pathCoordinates = waypoints.map(function(waypoint) {
@@ -176,29 +168,6 @@
 
             // Start tracking the rover's movement
             trackRoverMovement(pathCoordinates);
-        }
-
-
-
-        function sendWaypointsToRover(waypoints) {
-            // Simulate API call or command to send waypoints to the rover's control system
-            console.log("Sending waypoints to rover:", waypoints);
-
-            // Here you can send an HTTP request to your backend, e.g.:
-            // axios.post('/api/send-waypoints', { waypoints: waypoints })
-            // .then(response => console.log("Rover acknowledged waypoints", response))
-            // .catch(error => console.error("Error sending waypoints", error));
-        }
-        
-        function trackRoverMovement(waypoints) {
-            console.log("Tracking rover movement");
-        }
-
-
-        // Simulate rover movement by updating the marker position
-        function updateRoverPosition(newCoords) {
-            roverMarker.setLatLng(newCoords);  // Update rover marker position
-            map.setView(newCoords, 13);  // Center map on the new position
         }
     </script>
 

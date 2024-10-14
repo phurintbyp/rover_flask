@@ -53,6 +53,12 @@ def generate_frames():
         frame = jpeg.tobytes()  # Convert to bytes for streaming
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+@app.route('send_coords/<lat>/<long>')
+def handle_coords(lat, long):
+    data = ("lat: ", lat, ", lng: ", long)
+    send_data(data)
+    return f"Coords {data} sent to the Arduino"
 
 @app.route('/video_feed')
 def video_feed():
