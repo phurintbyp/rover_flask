@@ -10,8 +10,8 @@ ARDUINO_ADDRESS = 0x08
 bus = smbus2.SMBus(1)  # Initialize the bus here
 
 def send_data(data):
-    with bus:  # Use the existing bus instance
-        bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(c) for c in data])
+    bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(data)])  # Send the single character as its ASCII value
+
 
 # Initialize the camera
 camera = None
