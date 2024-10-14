@@ -71,25 +71,5 @@
         <button class="control-button" onclick="sendCommand('i')">Increase Servo</button>
         <button class="control-button" onclick="sendCommand('k')">Decrease Servo</button>
     </div>
-
-    <!-- Button to request data and display it -->
-    <div>
-        <button class="control-button" onclick="requestData()">Get Data</button>
-    </div>
-
-    <!-- Area to display received data -->
-    <div id="data-display">Data from Arduino will be displayed here.</div>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script>
-        function requestData() {
-            fetch('/request_data')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('data-display').innerText = `Received Data: ${data.data}`;
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
-    </script>
 </body>
 </html>
