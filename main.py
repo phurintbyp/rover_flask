@@ -54,7 +54,7 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         
-@app.route('send_coords/<lat>/<long>')
+@app.route('/send_coords/<lat>/<long>')
 def handle_coords(lat, long):
     data = ("lat: ", lat, ", lng: ", long)
     send_data(data)
