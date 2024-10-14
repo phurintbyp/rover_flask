@@ -22,6 +22,7 @@ void receiveData(int byteCount) {
     char c = Wire.read();  // Read one byte
     receivedData += c;     // Append it to the receivedData string
   }
+  Serial.println(receivedData);
   if (isCoordinateString(receivedData)) {
     // Parse and handle the coordinates
     float latitude, longitude;

@@ -63,6 +63,7 @@ def generate_frames():
         
 @app.route('/send_coords/<lat>/<long>')
 def handle_coords(lat, long):
+    data=""
     data = f"lat: {lat}, lng: {long}"  # Format the string
     send_string(data)  # Use the new function to send the whole string
     return f"Coords '{data}' sent to the Arduino."
