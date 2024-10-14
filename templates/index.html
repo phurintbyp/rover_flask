@@ -133,11 +133,14 @@
                     }
                 },
                 // You can add routing options here if needed
+            }).on('routesfound', function(e) {  // Use curly braces instead of parentheses
+                console.log(e);  // Correctly logs the event object
             }).addTo(map);
 
             // Call function to send this path to the rover
             sendPathToRover(); // No need to pass start and destination here
         });
+
 
 
         function sendPathToRover() {
