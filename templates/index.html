@@ -74,6 +74,11 @@
         <img src="{{ url_for('video_feed') }}" alt="Video Stream">
     </div>
 
+    <div id="data-display">
+        <h2>Raspberry Pi Temperature:</h2>
+        <p id="temperature">Loading...</p>
+    </div>    
+
     <!-- Map Container -->
     <div id="map"></div>
 
@@ -95,6 +100,19 @@
 
     <!-- Initialize the map and routing -->
     <script>
+        // Fetch temperature from the Flask backend
+        function fetchTemperature() {
+            fetch('/temperature')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('temperature').innerText = `${data.temperature} °C`;
+                })
+                .catch(error => console.error('Error fetching temperature:', error));
+        }
+
+        // Fetch temperature every 5 seconds
+        setInterval(fetchTemperature, 5000);
+
         // Set initial coordinates of the rover
         var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
 

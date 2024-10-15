@@ -3,6 +3,7 @@ from picamera2 import Picamera2
 import cv2
 import smbus2
 import time
+import os
 
 app = Flask(__name__)
 
@@ -111,6 +112,17 @@ def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     initialize_camera()  # Ensure camera is initialized before streaming
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+def get_temperature():
+    """Retrieve the temperature of the Raspberry Pi."""
+    temp = os.popen("vcgencmd measure_temp").readline()
+    return float(temp.replace("temp=", "").replace("'C\n", ""))
+
+@app.route('/temperature')
+def temperature():
+    """Return the current temperature as JSON."""
+    temp = get_temperature()
+    return jsonify({'temperature': temp})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
