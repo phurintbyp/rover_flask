@@ -10,3 +10,7 @@ function sendCoords() {
     fetch(`/send_coords`);
 }
 
+function resetCoords(){
+    fetch(`/reset_coords`);
+}
+

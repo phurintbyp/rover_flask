@@ -81,6 +81,11 @@ def send_coords ():
 
     return "All coordinates sent!"
 
+@app.route('/reset_coords')
+def reset_coords():
+    coords_list.clear()
+    return "Coordinates list cleared"
+
 def wait_for_ack():
     while True:
         try:

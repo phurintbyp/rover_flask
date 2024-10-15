@@ -135,6 +135,7 @@
             }).on('routesfound', function(e) {
                 console.log(e);
                 let lastCoord = null;
+                resetCoords();
 
                 e.routes[0].coordinates.forEach(function(coord, index) {
                     const currentCoord = { lat: coord.lat, lng: coord.lng };  // Create an object for the current coordinate
