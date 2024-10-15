@@ -126,53 +126,62 @@
         var drawControl = new L.Control.Draw();
         map.addControl(drawControl);
 
-        // Listen for map clicks to set a destination
-        map.on('click', function(e) {
-            var destination = e.latlng;
+        var drawFeatures = new L.FeatureGroup();
+        map.addLayer(drawnFeatures);
 
-            if (routeControl) {
-                map.removeControl(routeControl); // Remove existing route if any
-            }
-
-            // Create a new route
-            routeControl = L.Routing.control({
-                waypoints: [
-                    L.latLng(roverCoords), // Start at the rover's current position
-                    L.latLng(destination)   // End at the clicked location
-                ],
-                routeWhileDragging: true,  // Optional: Updates route while dragging
-                createMarker: function(i, waypoint, n) {
-                    if (i === 0) {
-                        return L.marker(waypoint.latLng).bindPopup("Rover Start");
-                    } else if (i === n - 1) {
-                        return L.marker(waypoint.latLng).bindPopup("Target Location");
-                    }
-                },
-            }).on('routesfound', function(e) {
-                console.log(e);
-                let lastCoord = null;
-                let length = 0;
-                resetCoords();
-
-                e.routes[0].coordinates.forEach(function(coord, index) {
-                    const currentCoord = { i: index, lat: coord.lat, lng: coord.lng };  // Create an object for the current coordinate
-
-                    // Check if current coordinate is different from the last sent coordinate
-                    if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
-                        handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
-                        length+=1;
-                        console.log(`Coords sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
-                        
-                        // Update the lastCoord to the current one after sending
-                        lastCoord = currentCoord;
-                    } else {
-                        console.log(`Duplicate coordinate, not sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
-                    }
-                });
-                console.log("Start sending coords to arduino");
-                sendCoords(length);
-            }).addTo(map);
+        map.on("draw:created", function(e){
+            var type = e.layerType;
+            var layer = e.layer;
+            console.log(e)
+            drawnFeatures.addLayer(layer);
         });
+
+        // map.on('click', function(e) {
+        //     var destination = e.latlng;
+
+        //     if (routeControl) {
+        //         map.removeControl(routeControl); // Remove existing route if any
+        //     }
+
+        //     // Create a new route
+        //     routeControl = L.Routing.control({
+        //         waypoints: [
+        //             L.latLng(roverCoords), // Start at the rover's current position
+        //             L.latLng(destination)   // End at the clicked location
+        //         ],
+        //         routeWhileDragging: true,  // Optional: Updates route while dragging
+        //         createMarker: function(i, waypoint, n) {
+        //             if (i === 0) {
+        //                 return L.marker(waypoint.latLng).bindPopup("Rover Start");
+        //             } else if (i === n - 1) {
+        //                 return L.marker(waypoint.latLng).bindPopup("Target Location");
+        //             }
+        //         },
+        //     }).on('routesfound', function(e) {
+        //         console.log(e);
+        //         let lastCoord = null;
+        //         let length = 0;
+        //         resetCoords();
+
+        //         e.routes[0].coordinates.forEach(function(coord, index) {
+        //             const currentCoord = { i: index, lat: coord.lat, lng: coord.lng };  // Create an object for the current coordinate
+
+        //             // Check if current coordinate is different from the last sent coordinate
+        //             if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
+        //                 handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
+        //                 length+=1;
+        //                 console.log(`Coords sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
+                        
+        //                 // Update the lastCoord to the current one after sending
+        //                 lastCoord = currentCoord;
+        //             } else {
+        //                 console.log(`Duplicate coordinate, not sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
+        //             }
+        //         });
+        //         console.log("Start sending coords to arduino");
+        //         sendCoords(length);
+        //     }).addTo(map);
+        // });
     </script>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
