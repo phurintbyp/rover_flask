@@ -3,9 +3,6 @@ from picamera2 import Picamera2
 import cv2
 import smbus2
 import time
-import os
-import signal
-import threading
 
 app = Flask(__name__)
 
@@ -14,25 +11,12 @@ bus = smbus2.SMBus(1)  # Initialize the bus here
 
 coords_list = []
 
-stop_temperature_updates = False
-
 def send_data(data):
     bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(data)])  # Send the single character as its ASCII value
 
 def send_string(data):
     ascii_values = [ord(char) for char in data]
     bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, ascii_values)
-
-def signal_handler(sig, frame):
-    """Handle SIGINT (Ctrl+C) and set the stop flag."""
-    global stop_temperature_updates
-    print("Shutting down server...")
-    stop_temperature_updates = True
-    # Give time for cleanup if needed (e.g., close resources)
-    time.sleep(1)
-    exit(0)
-
-signal.signal(signal.SIGINT, signal_handler)
 
 # Initialize the camera
 camera = None
@@ -126,21 +110,6 @@ def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     initialize_camera()  # Ensure camera is initialized before streaming
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-def get_temperature():
-    """Retrieve the temperature of the Raspberry Pi."""
-    temp = os.popen("vcgencmd measure_temp").readline()
-    return float(temp.replace("temp=", "").replace("'C\n", ""))
-
-@app.route('/temperature')
-def temperature():
-    """Send temperature or stop updates if shutdown is detected."""
-    if stop_temperature_updates:
-        return jsonify({'shutdown': True}), 503  # Service Unavailable
-
-    # Simulate temperature retrieval
-    temp = get_temperature()  # Replace with actual temperature retrieval logic
-    return jsonify({'temperature': temp})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
