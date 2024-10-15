@@ -92,6 +92,25 @@
         <button onclick="generateCoords()">Generate Path</button>
     </div>
 
+    <div class="control-panel">
+        <button class="control-button" onclick="sendCommand('w')">Forward</button>
+        <button class="control-button" onclick="sendCommand('s')">Reverse</button>
+        <button class="control-button" onclick="sendCommand('a')">Left</button>
+        <button class="control-button" onclick="sendCommand('d')">Right</button>
+        <button class="control-button" onclick="sendCommand('h')">Stop</button>
+        <button class="control-button" onclick="sendCommand('i')">Increase Servo</button>
+        <button class="control-button" onclick="sendCommand('k')">Decrease Servo</button>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <!-- Leaflet Routing Machine JS -->
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+    <!-- Leaflet Draw JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+
     <script>
         var drawnFeatures = new L.FeatureGroup();
         map.addLayer(drawnFeatures);
@@ -141,25 +160,6 @@
             console.log("Generating Coords");
         }
     </script>
-
-    <div class="control-panel">
-        <button class="control-button" onclick="sendCommand('w')">Forward</button>
-        <button class="control-button" onclick="sendCommand('s')">Reverse</button>
-        <button class="control-button" onclick="sendCommand('a')">Left</button>
-        <button class="control-button" onclick="sendCommand('d')">Right</button>
-        <button class="control-button" onclick="sendCommand('h')">Stop</button>
-        <button class="control-button" onclick="sendCommand('i')">Increase Servo</button>
-        <button class="control-button" onclick="sendCommand('k')">Decrease Servo</button>
-    </div>
-
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-
-    <!-- Leaflet Routing Machine JS -->
-    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-
-    <!-- Leaflet Draw JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 
     <!-- Initialize the map and routing -->
     <script>
