@@ -72,6 +72,7 @@ def send_coords ():
         send_string(coord)
         if wait_for_ack():
             print(f"Reached: {coord}, sending next...")
+    return "All coordinates sent!"
 
 def wait_for_ack():
     while True:

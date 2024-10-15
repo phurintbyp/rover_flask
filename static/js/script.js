@@ -3,10 +3,10 @@ function sendCommand(command) {
 }
 
 function handleCoords(lat, lng) {
-    fetch(`/handle_coords/${lat}/${lng}`)
+    fetch(`/handle_coords/${lat}/${lng}`);
 }
 
 function sendCoords() {
-    fetch(`/send_coords`)
+    fetch(`/send_coords`);
 }
 
