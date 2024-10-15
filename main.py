@@ -62,22 +62,26 @@ def generate_frames():
         
 @app.route('/handle_coords/<index>/<lat>/<long>')
 def handle_coords(index, lat, long):
-    data = f"{index} {lat} {long}"  # Format the string
+    data = (int(index), float(lat), float(long))  # Store as tuple with correct types
     coords_list.append(data)
-    return f"Coords '{data}' sent to the PI."
+    return f"Coords '{data}' received and stored."
+
 
 @app.route('/send_coords')
-def send_coords ():
-    if not coords_list:  # If coords_list is empty
-        return "No coordinates to send!", 400  # HTTP 400 Bad Request
-    
-    print(f"\nCoords_list:\n{coords_list}")
+def send_coords():
+    if not coords_list:
+        return "No coordinates to send!", 400
 
-    for coord in coords_list :
-        print(f"\nCoordinates: \n{coord}")
-        send_string(coord)
-        # if wait_for_ack():
-        #     print(f"Reached: {coord}, sending next...")
+    # Sort coordinates by index
+    sorted_coords = sorted(coords_list, key=lambda x: x[0])
+
+    print(f"\nSorted Coords List:\n{sorted_coords}")
+
+    for coord in sorted_coords:
+        # Format as string before sending
+        data_str = f"{coord[0]} {coord[1]} {coord[2]}"
+        print(f"Sending: {data_str}")
+        send_string(data_str)
 
     return "All coordinates sent!"
 
