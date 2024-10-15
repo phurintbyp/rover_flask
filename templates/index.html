@@ -121,6 +121,7 @@
 
     <!-- Initialize the map and routing -->
     <script>
+        let currentLayerType = null;
 
         function getNumberFieldValue() {
             const numberField = document.getElementById('quality');
@@ -202,7 +203,7 @@
         map.addControl(drawControl);
 
         map.on("draw:created", function(e){
-            var currentLayerType = e.layerType;
+            currentLayerType = e.layerType;
             var layer = e.layer;
             console.log(e);
 
