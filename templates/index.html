@@ -137,7 +137,7 @@
         map.on("draw:created", function(e){
             var type = e.layerType;
             var layer = e.layer;
-            console.log(layer.toGeoJSON());
+            console.log(e);
 
             layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`)
             drawnFeatures.addLayer(layer);
