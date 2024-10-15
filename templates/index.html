@@ -101,16 +101,42 @@
     <!-- Initialize the map and routing -->
     <script>
 
-        // function fetchTemperature() {
-        //     fetch('/temperature')
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             document.getElementById('temperature').innerText = `${data.temperature} °C`;
-        //         })
-        //         .catch(error => console.error('Error fetching temperature:', error));
-        // }
+        let temperatureInterval;
 
-        // setInterval(fetchTemperature, 5000);
+        function fetchTemperature() {
+            fetch('/temperature')
+                .then(response => {
+                    if (!response.ok) {
+                        // If server is unreachable or returns error, stop the interval
+                        console.error('Server not reachable, stopping temperature fetch.');
+                        stopTemperatureUpdates();
+                        return Promise.reject('Server not reachable');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('temperature').innerText = `${data.temperature} °C`;
+                })
+                .catch(error => console.error('Error fetching temperature:', error));
+        }
+
+        function startTemperatureUpdates() {
+            temperatureInterval = setInterval(fetchTemperature, 5000);
+        }
+
+        function stopTemperatureUpdates() {
+            if (temperatureInterval) {
+                clearInterval(temperatureInterval);
+                temperatureInterval = null;
+                console.log('Temperature updates stopped.');
+            }
+        }
+
+        // Start fetching temperature when the page loads
+        startTemperatureUpdates();
+
+        // Stop fetching temperature when the page is closed
+        window.addEventListener('beforeunload', stopTemperatureUpdates);
 
         // Set initial coordinates of the rover
         var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
