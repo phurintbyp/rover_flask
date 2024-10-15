@@ -26,7 +26,11 @@ void receiveData(int byteCount) {
     }
   }
 
+  Serial.print("Received Data");
+  Serial.println(receivedData);
+
   if (receivedData.startsWith("lat")) {
+    Serial.println("goToCoords called");
     goToCoord(receivedData);
   }
   else if (receivedData == "w") {
@@ -48,7 +52,7 @@ void goToCoord(String coord){
   Serial.println(longitude);
 
   // Simulate going to coords function
-  delay(2000);
+  delay(500);
   Serial.println("Reached target");
 
   // Send confirmation to Raspberry Pi

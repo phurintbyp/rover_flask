@@ -87,8 +87,9 @@ def wait_for_ack():
             if data == ord('1'):
                 return True  # Acknowledgement received
         except:
-            print("Error occured during wait_for_ack")
             pass  # Ignore errors
+
+        time.sleep(0.1)
 
 
 @app.route('/video_feed')
