@@ -6,8 +6,8 @@ function handleCoords(index, lat, lng) {
     fetch(`/handle_coords/${index}/${lat}/${lng}`);
 }
 
-function sendCoords() {
-    fetch(`/send_coords`);
+function sendCoords(max) {
+    fetch(`/send_coords/${max}`);
 }
 
 function resetCoords(){

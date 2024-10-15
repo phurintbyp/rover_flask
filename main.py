@@ -67,11 +67,14 @@ def handle_coords(index, lat, long):
     return f"Coords '{data}' received and stored."
 
 
-@app.route('/send_coords')
-def send_coords():
+@app.route('/send_coords/<max>')
+def send_coords(max):
     if not coords_list:
         return "No coordinates to send!", 400
-
+    
+    # Send max index
+    array_max = f"max: {max}"
+    send_string(array_max)
     # Sort coordinates by index
     sorted_coords = sorted(coords_list, key=lambda x: x[0])
 
