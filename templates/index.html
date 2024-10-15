@@ -107,7 +107,6 @@
             fetch('/temperature')
                 .then(response => {
                     if (!response.ok) {
-                        // If server is unreachable or returns error, stop the interval
                         console.error('Server not reachable, stopping temperature fetch.');
                         stopTemperatureUpdates();
                         return Promise.reject('Server not reachable');
@@ -115,7 +114,12 @@
                     return response.json();
                 })
                 .then(data => {
-                    document.getElementById('temperature').innerText = `${data.temperature} °C`;
+                    if (data.shutdown) {
+                        console.log('Server is shutting down, stopping temperature updates.');
+                        stopTemperatureUpdates();
+                    } else {
+                        document.getElementById('temperature').innerText = `${data.temperature} °C`;
+                    }
                 })
                 .catch(error => console.error('Error fetching temperature:', error));
         }
