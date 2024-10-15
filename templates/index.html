@@ -89,15 +89,56 @@
         <label for="quality">Quality: </label>
         <input type="number" id="quality" value="10" min="0" max="100"/>
         <button onclick="getNumberFieldValue()">Get Value</button>
+        <button onclick="generateCoords()">Generate Path</button>
     </div>
 
     <script>
-        // Function to retrieve the number field value
+        var drawnFeatures = new L.FeatureGroup();
+        map.addLayer(drawnFeatures);
+
+        var removeControl = new L.EditToolbar.Delete();
+        map.addLayer(removeControl);
+
+        var drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnFeatures,
+                remove: false
+            }
+        });
+        map.addControl(drawControl);
+
+        map.on("draw:created", function(e){
+            var type = e.layerType;
+            var layer = e.layer;
+            console.log(e);
+
+            layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`)
+            drawnFeatures.addLayer(layer);
+        });
+
+        map.on("draw:edited", function(e){
+            var layers = e.layers;
+            var type = e.layerType;
+
+            layers.eachLayer(function(layer){
+                console.log(layer);
+            })
+
+            if(layerType=='marker'){
+                //Do something
+            }
+        })
+
+        // Function to generate coordinates
         function getNumberFieldValue() {
             const numberField = document.getElementById('quality');
-            const value = parseInt(numberField.value, 10);  // Convert value to an integer
-            console.log('Quality:', value);
+            const quality = parseInt(numberField.value, 10);  // Convert value to an integer
+            console.log('Quality:', quality);
             // You can use the value elsewhere in your code
+        }
+
+        function generateCoords(){
+            console.log("Generating Coords");
         }
     </script>
 
@@ -137,39 +178,6 @@
         var roverMarker = L.marker(roverCoords).addTo(map).bindPopup("Rover is here").openPopup();
 
         var routeControl;
-
-        var drawnFeatures = new L.FeatureGroup();
-        map.addLayer(drawnFeatures);
-
-        var drawControl = new L.Control.Draw({
-            edit: {
-                featureGroup: drawnFeatures,
-                remove: false
-            }
-        });
-        map.addControl(drawControl);
-
-        map.on("draw:created", function(e){
-            var type = e.layerType;
-            var layer = e.layer;
-            console.log(e);
-
-            layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`)
-            drawnFeatures.addLayer(layer);
-        });
-
-        map.on("draw:edited", function(e){
-            var layers = e.layers;
-            var type = e.layerType;
-
-            layers.eachLayer(function(layer){
-                console.log(layer);
-            })
-
-            if(layerType=='marker'){
-                //Do something
-            }
-        })
 
         // map.on('click', function(e) {
         //     var destination = e.latlng;
