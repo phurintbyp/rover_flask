@@ -142,7 +142,7 @@
 
                     // Check if current coordinate is different from the last sent coordinate
                     if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
-                        handleCoords(currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
+                        handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
                         console.log(`Coords sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
                         
                         // Update the lastCoord to the current one after sending
