@@ -136,9 +136,6 @@
         var drawnFeatures = new L.FeatureGroup();
         map.addLayer(drawnFeatures);
 
-        var removeControl = new L.EditToolbar.Delete();
-        map.addLayer(removeControl);
-
         var drawControl = new L.Control.Draw({
             edit: {
                 featureGroup: drawnFeatures,
