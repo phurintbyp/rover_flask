@@ -91,11 +91,13 @@
         <button onclick="getNumberFieldValue()">Get Value</button>
         <!-- Test Button for circle coords -->
         <!-- <button 
-        onclick="generateCoords(13.727114348838516, 100.77484935522082, 13.675710085331318, 100, 'circle' )">
+        onclick="generateCircleCoords(13.727114348838516, 100.77484935522082, 13.675710085331318, 100, 'circle' )">
             Generate Path
         </button> -->
         <button 
-        onclick="console.log(currentLayerType);">
+        onclick="if (currentLayerType == 'circle'){
+            coordsList = generateCircleCoords(layer._latlng.lat, layer._latlng.lng, layer._mRadius, getNumberFieldValue())
+        }">
             Generate Path
         </button>
     </div>
@@ -122,24 +124,22 @@
     <!-- Initialize the map and routing -->
     <script>
         let currentLayerType = null;
+        let layer = null;
 
         function getNumberFieldValue() {
             const numberField = document.getElementById('quality');
             const quality = parseInt(numberField.value, 10);  // Convert value to an integer
-            console.log('Quality:', quality);
-            // You can use the value elsewhere in your code
+            return quality;
         }
 
-        function generateCoords(
+        function generateCircleCoords(
             lat, 
             lng, 
             radius, // Radius in meters
-            quality,
-            type 
+            quality
         ) {
             console.log("Generating Coords");
             const coords = []; // Array to store coordinates
-            if (type == "circle"){
                 const numPoints = Math.floor(quality * (radius / 100)); // Adjust points based on radius and quality
 
                 // Step 1: Calculate initial points around the circle
@@ -176,7 +176,6 @@
 
                 console.log("Adjusted Coords:", adjustedCoords);
                 return adjustedCoords;
-            }
         }
 
         // Helper function to calculate Euclidean distance between two points
@@ -204,7 +203,7 @@
 
         map.on("draw:created", function(e){
             currentLayerType = e.layerType;
-            var layer = e.layer;
+            layer = e.layer;
             console.log(e);
 
             drawnFeatures.clearLayers();
