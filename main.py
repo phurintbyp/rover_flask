@@ -74,8 +74,8 @@ def send_coords ():
     for coord in coords_list :
         print(f"\nCoordinates: \n{coord}")
         send_string(coord)
-        if wait_for_ack():
-            print(f"Reached: {coord}, sending next...")
+        # if wait_for_ack():
+        #     print(f"Reached: {coord}, sending next...")
 
     return "All coordinates sent!"
 
@@ -87,7 +87,7 @@ def wait_for_ack():
             if data == ord('1'):
                 return True  # Acknowledgement received
         except:
-            pass  # Ignore errors
+            pass
 
         time.sleep(0.1)
 

@@ -26,18 +26,25 @@ void receiveData(int byteCount) {
     }
   }
 
-  Serial.print("Received Data");
+  Serial.println("Received Data");
   Serial.println(receivedData);
 
-  if (receivedData.startsWith("lat")) {
-    Serial.println("goToCoords called");
-    goToCoord(receivedData);
-  }
-  else if (receivedData == "w") {
-    digitalWrite(13, HIGH);
-  }else if (receivedData == "s") {
-    digitalWrite(13, LOW);
-  }
+  // if (receivedData.startsWith("lat")) {
+  //   Serial.println("goToCoords called");
+  //   // Simulate going to coords function
+  //   delay(500);
+  //   Serial.println("Reached target");
+
+  //   // Send confirmation to Raspberry Pi
+  //   Wire.beginTransmission(SLAVE_ADDRESS);
+  //   Wire.write('1');
+  //   Wire.endTransmission();
+  // }
+  // else if (receivedData == "w") {
+  //   digitalWrite(13, HIGH);
+  // }else if (receivedData == "s") {
+  //   digitalWrite(13, LOW);
+  // }
 }
 
 void goToCoord(String coord){
