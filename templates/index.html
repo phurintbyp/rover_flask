@@ -112,6 +112,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 
     <script>
+        // Function to generate coordinates
+        function getNumberFieldValue() {
+            const numberField = document.getElementById('quality');
+            const quality = parseInt(numberField.value, 10);  // Convert value to an integer
+            console.log('Quality:', quality);
+            // You can use the value elsewhere in your code
+        }
+
+        function generateCoords(){
+            console.log("Generating Coords");
+        }
+    </script>
+
+    <!-- Initialize the map and routing -->
+    <script>
+
+        // Set initial coordinates of the rover
+        var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
+
+        var map = L.map('map').setView(roverCoords, 13); // Set initial view to rover's location
+
         var drawnFeatures = new L.FeatureGroup();
         map.addLayer(drawnFeatures);
 
@@ -147,27 +168,6 @@
                 //Do something
             }
         })
-
-        // Function to generate coordinates
-        function getNumberFieldValue() {
-            const numberField = document.getElementById('quality');
-            const quality = parseInt(numberField.value, 10);  // Convert value to an integer
-            console.log('Quality:', quality);
-            // You can use the value elsewhere in your code
-        }
-
-        function generateCoords(){
-            console.log("Generating Coords");
-        }
-    </script>
-
-    <!-- Initialize the map and routing -->
-    <script>
-
-        // Set initial coordinates of the rover
-        var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
-
-        var map = L.map('map').setView(roverCoords, 13); // Set initial view to rover's location
 
         // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
