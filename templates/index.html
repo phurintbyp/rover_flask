@@ -139,7 +139,7 @@
         var drawControl = new L.Control.Draw({
             edit: {
                 featureGroup: drawnFeatures,
-                remove: false
+                remove: true
             }
         });
         map.addControl(drawControl);
@@ -165,6 +165,13 @@
                 //Do something
             }
         })
+
+        map.on("draw:deleted", function (e) {
+            var layers = e.layers;
+            layers.eachLayer(function (layer) {
+                console.log('Deleted Layer:', layer);
+            });
+        });
 
         // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
