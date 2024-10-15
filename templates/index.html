@@ -89,7 +89,15 @@
         <label for="quality">Quality: </label>
         <input type="number" id="quality" value="10" min="0" max="100"/>
         <button onclick="getNumberFieldValue()">Get Value</button>
-        <button onclick="generateCoords(13.727114348838516, 100.77484935522082, 13.675710085331318, 100 )">Generate Path</button>
+        <!-- Test Button for circle coords -->
+        <!-- <button 
+        onclick="generateCoords(13.727114348838516, 100.77484935522082, 13.675710085331318, 100, 'circle' )">
+            Generate Path
+        </button> -->
+        <button 
+        onclick="console.log(currentLayerType);">
+            Generate Path
+        </button>
     </div>
 
     <div class="control-panel">
@@ -113,6 +121,7 @@
 
     <!-- Initialize the map and routing -->
     <script>
+        let currentLayerType = null;
 
         function getNumberFieldValue() {
             const numberField = document.getElementById('quality');
@@ -125,48 +134,49 @@
             lat, 
             lng, 
             radius, // Radius in meters
-            quality, 
-            scalingFactor = 1
+            quality,
+            type 
         ) {
             console.log("Generating Coords");
-
             const coords = []; // Array to store coordinates
-            const numPoints = Math.floor(quality * scalingFactor * (radius / 100)); // Adjust points based on radius and quality
+            if (type == "circle"){
+                const numPoints = Math.floor(quality * (radius / 100)); // Adjust points based on radius and quality
 
-            // Step 1: Calculate initial points around the circle
-            for (let i = 0; i < numPoints; i++) {
-                const angle = (2 * Math.PI / numPoints) * i; // Angle in radians
+                // Step 1: Calculate initial points around the circle
+                for (let i = 0; i < numPoints; i++) {
+                    const angle = (2 * Math.PI / numPoints) * i; // Angle in radians
 
-                // Calculate new latitude and longitude using basic trigonometry
-                const newLat = lat + (radius / 111320) * Math.cos(angle);
-                const newLng = lng + (radius / (111320 * Math.cos(lat * Math.PI / 180))) * Math.sin(angle);
+                    // Calculate new latitude and longitude using basic trigonometry
+                    const newLat = lat + (radius / 111320) * Math.cos(angle);
+                    const newLng = lng + (radius / (111320 * Math.cos(lat * Math.PI / 180))) * Math.sin(angle);
 
-                coords.push([newLat, newLng]); // Store the initial coordinate
+                    coords.push([newLat, newLng]); // Store the initial coordinate
+                }
+
+                // Step 2: Calculate the mean distance from the center
+                let totalDistance = 0;
+                coords.forEach(([lat2, lng2]) => {
+                    const dist = euclideanDistance(lat, lng, lat2, lng2);
+                    totalDistance += dist;
+                });
+
+                const meanDistance = totalDistance / numPoints; // Mean distance
+
+                // Step 3: Adjust each coordinate to align with the desired radius
+                const adjustedCoords = coords.map(([lat2, lng2]) => {
+                    const dist = euclideanDistance(lat, lng, lat2, lng2);
+                    const adjustment = radius / dist;
+
+                    // Adjust the latitude and longitude proportionally
+                    const adjustedLat = lat + (lat2 - lat) * adjustment;
+                    const adjustedLng = lng + (lng2 - lng) * adjustment;
+
+                    return [adjustedLat, adjustedLng];
+                });
+
+                console.log("Adjusted Coords:", adjustedCoords);
+                return adjustedCoords;
             }
-
-            // Step 2: Calculate the mean distance from the center
-            let totalDistance = 0;
-            coords.forEach(([lat2, lng2]) => {
-                const dist = euclideanDistance(lat, lng, lat2, lng2);
-                totalDistance += dist;
-            });
-
-            const meanDistance = totalDistance / numPoints; // Mean distance
-
-            // Step 3: Adjust each coordinate to align with the desired radius
-            const adjustedCoords = coords.map(([lat2, lng2]) => {
-                const dist = euclideanDistance(lat, lng, lat2, lng2);
-                const adjustment = radius / dist;
-
-                // Adjust the latitude and longitude proportionally
-                const adjustedLat = lat + (lat2 - lat) * adjustment;
-                const adjustedLng = lng + (lng2 - lng) * adjustment;
-
-                return [adjustedLat, adjustedLng];
-            });
-
-            console.log("Adjusted Coords:", adjustedCoords);
-            return adjustedCoords;
         }
 
         // Helper function to calculate Euclidean distance between two points
@@ -193,7 +203,7 @@
         map.addControl(drawControl);
 
         map.on("draw:created", function(e){
-            var type = e.layerType;
+            currentLayerType = e.layerType;
             var layer = e.layer;
             console.log(e);
 
