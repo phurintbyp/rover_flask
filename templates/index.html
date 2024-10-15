@@ -125,7 +125,7 @@
             lat, 
             lng, 
             radius, // Radius in meters
-            quality , 
+            quality, 
             scalingFactor = 1
         ) {
             console.log("Generating Coords");
@@ -133,23 +133,47 @@
             const coords = []; // Array to store coordinates
             const numPoints = Math.floor(quality * scalingFactor * (radius / 100)); // Adjust points based on radius and quality
 
-            // Calculate each point around the circle
+            // Step 1: Calculate initial points around the circle
             for (let i = 0; i < numPoints; i++) {
                 const angle = (2 * Math.PI / numPoints) * i; // Angle in radians
 
-                // Offset in degrees (assuming 1 degree ≈ 111,320 meters)
-                const deltaLat = (radius * Math.cos(angle)) / 111320;
-                const deltaLng = (radius * Math.sin(angle)) / (111320 * Math.cos(lat * Math.PI / 180));
+                // Calculate new latitude and longitude using basic trigonometry
+                const newLat = lat + (radius / 111320) * Math.cos(angle);
+                const newLng = lng + (radius / (111320 * Math.cos(lat * Math.PI / 180))) * Math.sin(angle);
 
-                const newLat = lat + deltaLat;
-                const newLng = lng + deltaLng;
-
-                coords.push([newLat, newLng]); // Store the coordinate
+                coords.push([newLat, newLng]); // Store the initial coordinate
             }
 
-            console.log(coords);
+            // Step 2: Calculate the mean distance from the center
+            let totalDistance = 0;
+            coords.forEach(([lat2, lng2]) => {
+                const dist = euclideanDistance(lat, lng, lat2, lng2);
+                totalDistance += dist;
+            });
 
-            return coords;
+            const meanDistance = totalDistance / numPoints; // Mean distance
+
+            // Step 3: Adjust each coordinate to align with the desired radius
+            const adjustedCoords = coords.map(([lat2, lng2]) => {
+                const dist = euclideanDistance(lat, lng, lat2, lng2);
+                const adjustment = radius / dist;
+
+                // Adjust the latitude and longitude proportionally
+                const adjustedLat = lat + (lat2 - lat) * adjustment;
+                const adjustedLng = lng + (lng2 - lng) * adjustment;
+
+                return [adjustedLat, adjustedLng];
+            });
+
+            console.log("Adjusted Coords:", adjustedCoords);
+            return adjustedCoords;
+        }
+
+        // Helper function to calculate Euclidean distance between two points
+        function euclideanDistance(lat1, lng1, lat2, lng2) {
+            const dLat = (lat2 - lat1) * 111320; // Convert degrees to meters
+            const dLng = (lng2 - lng1) * 111320 * Math.cos(lat1 * Math.PI / 180);
+            return Math.sqrt(dLat ** 2 + dLng ** 2); // Pythagorean theorem
         }
 
         // Set initial coordinates of the rover
