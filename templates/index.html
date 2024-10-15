@@ -89,7 +89,7 @@
         <label for="quality">Quality: </label>
         <input type="number" id="quality" value="10" min="0" max="100"/>
         <button onclick="getNumberFieldValue()">Get Value</button>
-        <button onclick="generateCoords()">Generate Path</button>
+        <button onclick="generateCoords(13.727114348838516, 100.77484935522082, 13.675710085331318, 20, )">Generate Path</button>
     </div>
 
     <div class="control-panel">
@@ -111,8 +111,9 @@
     <!-- Leaflet Draw JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 
+    <!-- Initialize the map and routing -->
     <script>
-        // Function to generate coordinates
+
         function getNumberFieldValue() {
             const numberField = document.getElementById('quality');
             const quality = parseInt(numberField.value, 10);  // Convert value to an integer
@@ -120,13 +121,32 @@
             // You can use the value elsewhere in your code
         }
 
-        function generateCoords(){
+        function generateCoords(lat, lng, radius, quality, scalingFactor = 1) {
             console.log("Generating Coords");
-        }
-    </script>
 
-    <!-- Initialize the map and routing -->
-    <script>
+            const coords = []; // Array to store the generated coordinates
+            const earthRadius = 6371000; // Radius of the Earth in meters
+
+            // Adjust the number of points based on radius and quality
+            const numPoints = Math.floor(quality * scalingFactor * (radius / 100));
+
+            // Calculate each point on the circle
+            for (let i = 0; i < numPoints; i++) {
+                const angle = (2 * Math.PI / numPoints) * i; // Angle in radians
+
+                // Calculate the offset in latitude and longitude
+                const deltaLat = (radius / earthRadius) * Math.cos(angle);
+                const deltaLng = (radius / earthRadius) * Math.sin(angle) / Math.cos(lat * Math.PI / 180);
+
+                // Convert offset to degrees and generate the coordinate
+                const newLat = lat + deltaLat * (180 / Math.PI);
+                const newLng = lng + deltaLng * (180 / Math.PI);
+
+                coords.push([newLat, newLng]); // Store the coordinate
+            }
+            console.log(coords);
+            return coords;
+        }
 
         // Set initial coordinates of the rover
         var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
