@@ -149,8 +149,10 @@
             var layer = e.layer;
             console.log(e);
 
-            layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`)
+            drawnFeatures.clearLayers();
             drawnFeatures.addLayer(layer);
+
+            layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`)
         });
 
         map.on("draw:edited", function(e){
