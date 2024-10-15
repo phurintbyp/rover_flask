@@ -70,7 +70,9 @@ def handle_coords(lat, long):
 def send_coords ():
     if not coords_list:  # If coords_list is empty
         return "No coordinates to send!", 400  # HTTP 400 Bad Request
+    
     for coord in coords_list :
+        print(f"\nCoordinates: \n{coord}")
         send_string(coord)
         if wait_for_ack():
             print(f"Reached: {coord}, sending next...")
