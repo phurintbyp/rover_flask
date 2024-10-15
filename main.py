@@ -9,6 +9,8 @@ app = Flask(__name__)
 ARDUINO_ADDRESS = 0x08
 bus = smbus2.SMBus(1)  # Initialize the bus here
 
+coords_list = []
+
 def send_data(data):
     bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(data)])  # Send the single character as its ASCII value
 
@@ -58,11 +60,29 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         
-@app.route('/send_coords/<lat>/<long>')
+@app.route('/handle_coords/<lat>/<long>')
 def handle_coords(lat, long):
     data = f"lat: {lat}, lng: {long}"  # Format the string
-    send_string(data)  # Use the new function to send the whole string
-    return f"Coords '{data}' sent to the Arduino."
+    coords_list.append(data)
+    return f"Coords '{data}' sent to the PI."
+
+@app.route('/send_coords')
+def send_coords ():
+    for coord in coords_list :
+        send_string(coord)
+        if wait_for_ack():
+            print(f"Reached: {coord}, sending next...")
+
+def wait_for_ack():
+    while True:
+        try:
+            # Read a byte from Arduino, assuming it sends '1' when target is reached
+            data = bus.read_byte(ARDUINO_ADDRESS)
+            if data == ord('1'):
+                return True  # Acknowledgement received
+        except:
+            print("Error occured during wait_for_ack")
+            pass  # Ignore errors
 
 
 @app.route('/video_feed')

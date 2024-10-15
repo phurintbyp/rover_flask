@@ -133,16 +133,15 @@
                     }
                 },
             }).on('routesfound', function(e) {
-                let lastCoord = null;
-
                 console.log(e);
+                let lastCoord = null;
 
                 e.routes[0].coordinates.forEach(function(coord, index) {
                     const currentCoord = { lat: coord.lat, lng: coord.lng };  // Create an object for the current coordinate
 
                     // Check if current coordinate is different from the last sent coordinate
                     if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
-                        sendCoords(currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
+                        handleCoords(currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
                         console.log("Coords sent!\nlat: ", currentCoord.lat, "\nlong: ", currentCoord.lng);
                         
                         // Update the lastCoord to the current one after sending
@@ -151,6 +150,8 @@
                         console.log("Duplicate coordinate, not sent!\nlat: ", currentCoord.lat, "\nlong: ", currentCoord.lng);
                     }
                 });
+                console.log("Start sending coords to arduino");
+                sendCoords();
             }).addTo(map);
         });
 
