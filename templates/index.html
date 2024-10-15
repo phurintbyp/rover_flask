@@ -126,7 +126,7 @@
         var drawControl = new L.Control.Draw();
         map.addControl(drawControl);
 
-        var drawFeatures = new L.FeatureGroup();
+        var drawnFeatures = new L.FeatureGroup();
         map.addLayer(drawnFeatures);
 
         map.on("draw:created", function(e){
