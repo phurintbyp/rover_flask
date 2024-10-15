@@ -62,7 +62,7 @@ def generate_frames():
         
 @app.route('/handle_coords/<index>/<lat>/<long>')
 def handle_coords(index, lat, long):
-    data = f"i: {index}, lat: {lat}, lng: {long}"  # Format the string
+    data = f"{index} {lat} {long}"  # Format the string
     coords_list.append(data)
     return f"Coords '{data}' sent to the PI."
 
