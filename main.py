@@ -68,10 +68,13 @@ def handle_coords(lat, long):
 
 @app.route('/send_coords')
 def send_coords ():
+    if not coords_list:  # If coords_list is empty
+        return "No coordinates to send!", 400  # HTTP 400 Bad Request
     for coord in coords_list :
         send_string(coord)
         if wait_for_ack():
             print(f"Reached: {coord}, sending next...")
+
     return "All coordinates sent!"
 
 def wait_for_ack():
