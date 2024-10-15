@@ -121,30 +121,32 @@
             // You can use the value elsewhere in your code
         }
 
-        function generateCoords(lat, lng, radius, quality, scalingFactor = 1) {
+        function generateCoords(
+            lat, 
+            lng, 
+            radius, // Radius in meters
+            quality , 
+            scalingFactor = 1
+        ) {
             console.log("Generating Coords");
 
-            const coords = []; // Array to store the generated coordinates
-            const earthRadius = 6371000; // Radius of the Earth in meters
+            const coords = []; // Array to store coordinates
+            const numPoints = Math.floor(quality * scalingFactor * (radius / 100)); // Adjust points based on radius and quality
 
-            // Adjust the number of points based on radius and quality
-            const numPoints = Math.floor(quality * scalingFactor * (radius / 100));
-
-            // Calculate each point on the circle
+            // Calculate each point around the circle
             for (let i = 0; i < numPoints; i++) {
                 const angle = (2 * Math.PI / numPoints) * i; // Angle in radians
 
-                // Calculate the offset in latitude and longitude
-                const deltaLat = (radius / earthRadius) * Math.cos(angle);
-                const deltaLng = (radius / earthRadius) * Math.sin(angle) / Math.cos(lat * Math.PI / 180);
+                // Offset in degrees (assuming 1 degree ≈ 111,320 meters)
+                const deltaLat = (radius * Math.cos(angle)) / 111320;
+                const deltaLng = (radius * Math.sin(angle)) / (111320 * Math.cos(lat * Math.PI / 180));
 
-                // Convert offset to degrees and generate the coordinate
-                const newLat = lat + deltaLat * (180 / Math.PI);
-                const newLng = lng + deltaLng * (180 / Math.PI);
+                const newLat = lat + deltaLat;
+                const newLng = lng + deltaLng;
 
                 coords.push([newLat, newLng]); // Store the coordinate
             }
-            console.log(coords);
+
             return coords;
         }
 
