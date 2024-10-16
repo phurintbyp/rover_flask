@@ -62,7 +62,8 @@ img {
 /* Each half of the container */
 .half {
     width: 50%; /* Take half of the width */
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     box-sizing: border-box;
 }
 
@@ -76,7 +77,7 @@ img {
 
 #map {
     width: 100%;
-    height: calc(85% - 60px); /* Ensure it takes the rest of the half below the temperature text */
+    height: 90%; /* Ensure it takes the rest of the half below the temperature text */
     border: 2px solid #555;
     border-radius: 8px;
 }
