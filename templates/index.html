@@ -55,58 +55,62 @@
         <label for="drawPathSwitch">Enable Draw Path</label>
         <input type="checkbox" id="drawPathSwitch" />
     </div>
-
-    <div class="control-panel">
-        <!-- First row of buttons -->
-        <button class="control-button" onclick="sendCommand('q')">
-            <img src="{{ url_for('static', filename='img/rotateleft.png') }}" alt="Q" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('w')">
-            <img src="{{ url_for('static', filename='img/forward.png') }}" alt="W" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('e')">
-            <img src="{{ url_for('static', filename='img/rotateright.png') }}" alt="E" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('r')">
-            <img src="{{ url_for('static', filename='img/diagonalright.png') }}" alt="R" class="button-image">
-        </button>
+    <div class="keyboard-layout">
+        <!-- First Row -->
+        <div class="row">
+            <!-- First row of buttons -->
+            <button class="control-button" onclick="sendCommand('q')">
+                <img src="{{ url_for('static', filename='img/rotateleft.png') }}" alt="Q" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('w')">
+                <img src="{{ url_for('static', filename='img/forward.png') }}" alt="W" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('e')">
+                <img src="{{ url_for('static', filename='img/rotateright.png') }}" alt="E" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('r')">
+                <img src="{{ url_for('static', filename='img/diagonalright.png') }}" alt="R" class="button-image">
+            </button>
+            <!-- Right side buttons -->
+            <button class="control-button" onclick="sendCommand('u')">
+                <img src="{{ url_for('static', filename='img/bigleft.png') }}" alt="U" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('o')">
+                <img src="{{ url_for('static', filename='img/bigright.png') }}" alt="O" class="button-image">
+            </button>
+        </div>
+        
+        <div class="row">
+            <!-- Second row of buttons -->
+            <button class="control-button" onclick="sendCommand('a')">
+                <img src="{{ url_for('static', filename='img/crableft.png') }}" alt="A" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('s')">
+                <img src="{{ url_for('static', filename='img/reverse.png') }}" alt="S" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('d')">
+                <img src="{{ url_for('static', filename='img/crabright.png') }}" alt="D" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('f')">
+                <img src="{{ url_for('static', filename='img/diagonalleft.png') }}" alt="F" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('j')">
+                <img src="{{ url_for('static', filename='img/smallleft.png') }}" alt="J" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('k')">
+                <img src="{{ url_for('static', filename='img/center.png') }}" alt="K" class="button-image">
+            </button>
+            <button class="control-button" onclick="sendCommand('l')">
+                <img src="{{ url_for('static', filename='img/smallright.png') }}" alt="L" class="button-image">
+            </button>
+        </div>
     
-        <!-- Second row of buttons -->
-        <button class="control-button" onclick="sendCommand('a')">
-            <img src="{{ url_for('static', filename='img/crableft.png') }}" alt="A" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('s')">
-            <img src="{{ url_for('static', filename='img/reverse.png') }}" alt="S" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('d')">
-            <img src="{{ url_for('static', filename='img/crabright.png') }}" alt="D" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('f')">
-            <img src="{{ url_for('static', filename='img/diagonalleft.png') }}" alt="F" class="button-image">
-        </button>
-    
-        <!-- Right side buttons -->
-        <button class="control-button" onclick="sendCommand('u')">
-            <img src="{{ url_for('static', filename='img/bigleft.png') }}" alt="U" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('o')">
-            <img src="{{ url_for('static', filename='img/bigright.png') }}" alt="O" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('j')">
-            <img src="{{ url_for('static', filename='img/smallleft.png') }}" alt="J" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('k')">
-            <img src="{{ url_for('static', filename='img/center.png') }}" alt="K" class="button-image">
-        </button>
-        <button class="control-button" onclick="sendCommand('l')">
-            <img src="{{ url_for('static', filename='img/smallright.png') }}" alt="L" class="button-image">
-        </button>
-    
-        <!-- STOP Button -->
-        <button class="control-button stop-button" onclick="sendCommand('h')">
-            <img src="{{ url_for('static', filename='img/stop.png') }}" alt="Stop" class="button-image">
-            <span>STOP</span>
-        </button>
+        <div class="row">
+            <button class="stop-button" onclick="sendCommand('stop')">
+                <img src="{{ url_for('static', filename='img/stop.png') }}" alt="Stop" class="button-image">
+                <span>STOP</span>
+            </button>
+        </div>
     </div>
 
     <!-- Leaflet JS -->

@@ -20,46 +20,58 @@ img {
     width: 640px;
     height: 480px;
 }
-.control-panel {
-    display: flex;                /* Use flexbox layout */
-    justify-content: center;      /* Center the buttons in the container */
-    align-items: center;          /* Align the buttons vertically */
-    flex-wrap: wrap;              /* Allow buttons to wrap if needed */
-    gap: 5px;                     /* Adjust the gap between buttons */
-}
-.control-button {
-    padding: 0;                   /* Remove padding */
-    margin: 0;                    /* Remove margin */
-    border: none;                 /* Remove the border */
-    width: 80px;                  /* Adjust the width of the button */
-    height: 80px;                 /* Adjust the height of the button */
-    cursor: pointer;
+.keyboard-layout {
     display: flex;
-    justify-content: center;      /* Center the image horizontally */
-    align-items: center;          /* Center the image vertically */
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Each row in the keyboard */
+.row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* Spacing between rows */
+}
+
+.control-button {
+    width: 80px;
+    height: 80px;
+    background-color: #333;
+    border: 2px solid #555;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px; /* Space between buttons */
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .control-button img {
-    display: block;
-    max-width: 100%;              /* Ensure image scales to fit button */
-    max-height: 100%;             /* Ensure image scales to fit button */
-    padding: 0;
-    margin: 0;
-}
-.control-button:hover {
-    background-color: #555; /* Change background on hover */
-}
-.stop-button {
-    grid-column: span 4; /* Span across 4 columns */
+    width: 60px;
     height: 60px;
-    font-size: 20px;
-    background-color: #FF0000; /* Red background for stop */
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    color: white;
-    cursor: pointer;
+}
+
+.control-button:hover {
+    background-color: #555;
+}
+/* STOP Button */
+.stop-button {
+    width: 200px;
+    height: 80px;
+    background-color: red;
     border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.stop-button:hover {
+    background-color: darkred;
 }
 
 #data-display {
