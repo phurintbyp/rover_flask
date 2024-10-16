@@ -1,3 +1,5 @@
+// Endpoints
+
 function sendCommand(command) {
     fetch(`/send_command/${command}`);
 }
@@ -13,6 +15,8 @@ function sendCoords(max) {
 function resetCoords(){
     fetch(`/reset_coords`);
 }
+
+// Button functions
 
 let keyPressed = {};  // To track which keys are currently pressed
 let activeKey = null; // Track the currently active key
@@ -85,7 +89,7 @@ function handleButtonRelease(command, buttonId) {
         releaseTimeout = setTimeout(function() {
             keyPressed[command] = false;
             activeKey = null;
-            console.log(command + " button is released after delay");
+            console.log(command + " button is released");
 
             // Reset button appearance
             const button = document.getElementById(buttonId);
