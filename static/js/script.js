@@ -394,6 +394,7 @@ function fetchTemperature() {
         })
         .catch(error => {
             console.error('Error fetching temperature:', error);
+            document.getElementById('temperature').innerText = "Server has shutdown";  // Display server shutdown message
             stopTemperatureFetch();  // Stop further fetching if the server is down
         });
 }
