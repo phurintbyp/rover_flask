@@ -88,7 +88,7 @@
     <div>
         <label for="quality">Quality: </label>
         <input type="number" id="quality" value="10" min="0" max="100"/>
-        <button onclick="getNumberFieldValue()">Get Value</button>
+        <button id="getValueButton"onclick="getNumberFieldValue()">Get Value</button>
         <!-- Test Button for circle coords -->
         <!-- <button 
         onclick="generateCircleCoords(13.727114348838516, 100.77484935522082, 13.675710085331318, 100, 'circle' )">
@@ -109,15 +109,6 @@
         <label for="drawPathSwitch">Enable Draw Path</label>
         <input type="checkbox" id="drawPathSwitch" />
     </div>
-
-    <script>
-        let drawPath = false; 
-
-        const drawPathSwitch = document.getElementById('drawPathSwitch');
-        drawPathSwitch.addEventListener('change', function() {
-            drawPath = this.checked;
-        });
-    </script>
 
     <div class="control-panel">
         <button class="control-button" onclick="sendCommand('w')">Forward</button>
@@ -143,6 +134,32 @@
         // Enable when drawPath is True
         let currentLayerType = null;
         let layer = null;
+
+        let drawPath = false; // Initial value of drawPath
+
+        // Get the switch element
+        const drawPathSwitch = document.getElementById('drawPathSwitch');
+
+        // Add an event listener to toggle between drawPath being true or false
+        drawPathSwitch.addEventListener('change', function() {
+            drawPath = this.checked; // Set drawPath to true if checked, false otherwise
+            toggleDrawPath(); // Call function to toggle the functionality
+        });
+
+        // Function to toggle functionality based on drawPath value
+        function toggleDrawPath() {
+            if (drawPath) {
+                console.log("Draw path enabled");
+                enableDrawControl(); // Enable draw functionality
+                disableClickControl(); // Disable click functionality
+                enableInputs();
+            } else {
+                console.log("Map click functionality enabled");
+                disableDrawControl(); // Disable draw functionality
+                enableClickControl(); // Enable click functionality
+                disableInputs();
+            }
+        }
 
         function getNumberFieldValue() {
             const numberField = document.getElementById('quality');
@@ -243,29 +260,24 @@
         });
         map.addControl(drawControl);
 
-        map.on("draw:created", function(e){
-            currentLayerType = e.layerType;
-            layer = e.layer;
-            console.log(e);
+        function enableDrawControl(){
+            map.on("draw:edited", function(e){
+                var layers = e.layers;
+                var type = e.layerType;
 
-            drawnFeatures.clearLayers();
-            drawnFeatures.addLayer(layer);
+                layers.eachLayer(function(layer){
+                    console.log(layer);
+                })
 
-            layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`)
-        });
-
-        map.on("draw:edited", function(e){
-            var layers = e.layers;
-            var type = e.layerType;
-
-            layers.eachLayer(function(layer){
-                console.log(layer);
+                if(layerType=='marker'){
+                    //Do something
+                }
             })
-
-            if(layerType=='marker'){
-                //Do something
-            }
-        })
+        }
+        
+        function disableDrawControl() {
+            map.off("draw:created"); // Disable draw:created event listener
+        }
 
         map.on("draw:deleted", function (e) {
             var layers = e.layers;
@@ -284,54 +296,61 @@
 
         var routeControl;
 
-        // Enable when drawPath is False
+        // Enable map click functionality
+        function enableClickControl() {
+            map.on('click', function (e) {
+                var destination = e.latlng;
 
-        // map.on('click', function(e) {
-        //     var destination = e.latlng;
+                if (routeControl) {
+                    map.removeControl(routeControl); // Remove existing route if any
+                }
 
-        //     if (routeControl) {
-        //         map.removeControl(routeControl); // Remove existing route if any
-        //     }
+                // Create a new route
+                routeControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(roverCoords), // Start at the rover's current position
+                        L.latLng(destination)   // End at the clicked location
+                    ],
+                    routeWhileDragging: true
+                }).on('routesfound', function (e) {
+                    console.log("Route found:", e);
+                    let lastCoord = null;
+                    let length = 0;
+                    resetCoords();
 
-        //     // Create a new route
-        //     routeControl = L.Routing.control({
-        //         waypoints: [
-        //             L.latLng(roverCoords), // Start at the rover's current position
-        //             L.latLng(destination)   // End at the clicked location
-        //         ],
-        //         routeWhileDragging: true,  // Optional: Updates route while dragging
-        //         createMarker: function(i, waypoint, n) {
-        //             if (i === 0) {
-        //                 return L.marker(waypoint.latLng).bindPopup("Rover Start");
-        //             } else if (i === n - 1) {
-        //                 return L.marker(waypoint.latLng).bindPopup("Target Location");
-        //             }
-        //         },
-        //     }).on('routesfound', function(e) {
-        //         console.log(e);
-        //         let lastCoord = null;
-        //         let length = 0;
-        //         resetCoords();
+                    e.routes[0].coordinates.forEach(function (coord, index) {
+                        const currentCoord = { i: index, lat: coord.lat, lng: coord.lng };
+                        if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
+                            handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);
+                            length++;
+                            console.log(`Coords sent: Index: ${index}, lat: ${currentCoord.lat}, lng: ${currentCoord.lng}`);
 
-        //         e.routes[0].coordinates.forEach(function(coord, index) {
-        //             const currentCoord = { i: index, lat: coord.lat, lng: coord.lng };  // Create an object for the current coordinate
+                            lastCoord = currentCoord;
+                        } else {
+                            console.log(`Duplicate coord, not sent: Index: ${index}, lat: ${currentCoord.lat}, lng: ${currentCoord.lng}`);
+                        }
+                    });
+                    console.log("Start sending coords to Arduino");
+                    sendCoords(length);
+                }).addTo(map);
+            });
+        }
 
-        //             // Check if current coordinate is different from the last sent coordinate
-        //             if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
-        //                 handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
-        //                 length+=1;
-        //                 console.log(`Coords sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
-                        
-        //                 // Update the lastCoord to the current one after sending
-        //                 lastCoord = currentCoord;
-        //             } else {
-        //                 console.log(`Duplicate coordinate, not sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
-        //             }
-        //         });
-        //         console.log("Start sending coords to arduino");
-        //         sendCoords(length);
-        //     }).addTo(map);
-        // });
+        // Disable map click functionality
+        function disableClickControl() {
+            map.off('click'); // Disable the click event listener
+        }
+
+        function enableInputs() {
+            document.getElementById('quality').disabled = false;
+            document.getElementById('getValueButton').disabled = false;
+        }
+
+        // Function to disable the Quality input and Get Value button
+        function disableInputs() {
+            document.getElementById('quality').disabled = true;
+            document.getElementById('getValueButton').disabled = true;
+        }
     </script>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
