@@ -16,6 +16,7 @@ function resetCoords(){
 
 let keyPressed = {};  // To track which keys are currently pressed
 let activeKey = null; // Track the currently active key
+let releaseTimeout;
 
 document.addEventListener('keydown', function(event) {
     let key = event.key.toLowerCase();  // Convert key to lowercase for consistency
@@ -60,18 +61,22 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
-function handleButtonPress(command, buttonId) {
-    // Check if no key is currently active
-    if (!activeKey) {
-        activeKey = command;  // Set the command as the active key
-        keyPressed[command] = true;  // Mark the command as pressed
-        console.log(command + " button is pressed");
+function handleButtonRelease(command, buttonId) {
+    if (keyPressed[command] && command === activeKey) {
+        clearTimeout(releaseTimeout);
 
-        // Change the appearance of the button
-        const button = document.getElementById(buttonId);
-        if (button) {
-            button.style.backgroundColor = '#0056b3';  // Optional: Change button appearance
-        }
+        // Add delay before resetting the button and sending 'stop' command
+        releaseTimeout = setTimeout(function() {
+            keyPressed[command] = false;
+            activeKey = null;
+            console.log(command + " button is released after delay");
+
+            // Reset button appearance
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.style.backgroundColor = '';
+            }
+        }, 200);  // Delay of 200ms (adjust as needed)
     }
 }
 

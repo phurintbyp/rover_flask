@@ -246,8 +246,8 @@
             coordsList.forEach(function(coord, index) {
                 const currentCoord = {
                     i: index,
-                    lat: parseFloat(coord.lat.toFixed(4)),  // Limit latitude to 4 decimal places
-                    lng: parseFloat(coord.lng.toFixed(4))   // Limit longitude to 4 decimal places
+                    lat: parseFloat(coord[0].toFixed(4)),  // Limit latitude to 4 decimal places
+                    lng: parseFloat(coord[1].toFixed(4))   // Limit longitude to 4 decimal places
                 };
 
                 // Check if current coordinate is different from the last sent coordinate
