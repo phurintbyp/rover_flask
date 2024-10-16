@@ -73,7 +73,7 @@ img {
 /* Style for the camera feed */
 #camera-feed img {
     width: auto;
-    height: 70%;
+    height: 90%;
     border: 2px solid #555;
     border-radius: 8px;
 }
