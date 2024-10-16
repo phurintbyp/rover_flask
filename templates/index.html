@@ -261,6 +261,17 @@
         map.addControl(drawControl);
 
         function enableDrawControl(){
+            map.on("draw:created", function (e) {
+                currentLayerType = e.layerType;
+                layer = e.layer;
+                console.log("Drawn layer type:", currentLayerType);
+
+                drawnFeatures.clearLayers();
+                drawnFeatures.addLayer(layer);
+
+                layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`);
+            });
+
             map.on("draw:edited", function(e){
                 var layers = e.layers;
                 var type = e.layerType;
@@ -273,18 +284,20 @@
                     //Do something
                 }
             })
+
+            map.on("draw:deleted", function (e) {
+                var layers = e.layers;
+                layers.eachLayer(function (layer) {
+                    console.log('Deleted Layer:', layer);
+                });
+            });
         }
         
         function disableDrawControl() {
             map.off("draw:created"); // Disable draw:created event listener
+            map.off("draw:edited");
+            map.off("draw:deleted");
         }
-
-        map.on("draw:deleted", function (e) {
-            var layers = e.layers;
-            layers.eachLayer(function (layer) {
-                console.log('Deleted Layer:', layer);
-            });
-        });
 
         // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
