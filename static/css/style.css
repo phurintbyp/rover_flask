@@ -57,7 +57,7 @@ img {
     justify-content: space-between;
     margin-left: 20px;
     width: 100%;
-    height: 100vh; /* Full viewport height */
+    height: 50vh; /* Full viewport height */
 }
 
 /* Each half of the container */
