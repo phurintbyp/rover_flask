@@ -46,35 +46,25 @@ img {
     font-size: 18px;
     color: #333;
 }
-/* Main container holding both sections (camera+map and controls) */
 .container {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 100vh; /* Full viewport height */
+    height: 70vh; /* Full viewport height */
 }
 
-/* Left side for camera feed and map (taking up half of the container) */
-.left-column {
-    display: flex;
-    flex-direction: column; /* Stack the camera and map vertically */
-    width: 50%; /* Take up half of the page */
+/* Each half will take 50% of the container */
+.half {
+    width: 50%;
     box-sizing: border-box;
     padding: 10px;
 }
 
-/* Camera feed and map should each take half the height */
-#camera-feed, #map {
-    width: 100%; /* Full width of the column */
-    height: 50%; /* Each element takes half the height of its column */
+/* Style for the camera feed */
+#camera-feed img,
+#map {
+    width: 100%;
+    height: 100%; /* Ensure both take up the full height of their container */
     border: 2px solid #555;
     border-radius: 8px;
-    margin-bottom: 10px; /* Adds some spacing between the elements */
-}
-
-/* Right side for controls */
-.right-column {
-    width: 50%; /* Take up the other half of the page */
-    box-sizing: border-box;
-    padding: 10px;
 }
