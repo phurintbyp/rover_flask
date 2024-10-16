@@ -63,6 +63,7 @@ img {
 /* Each half of the container */
 .half {
     width: 50%; /* Take half of the width */
+    display: flex;
     justify-content: center;
     padding-left: 10px;
     padding-right: 10px;
