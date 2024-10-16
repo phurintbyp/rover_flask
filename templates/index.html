@@ -100,7 +100,7 @@
             coordsList = generateCircleCoords(layer._latlng.lat, layer._latlng.lng, layer._mRadius, getNumberFieldValue())
         } else if(currentLayerType == 'polyline'){
             coordsList = layer._latlngs
-            handleCoords(coordsList);
+            handleCoordsList(coordsList);
         }
         console.log(coordsList);
         ">
@@ -191,7 +191,7 @@
             return Math.sqrt(dLat ** 2 + dLng ** 2); // Pythagorean theorem
         }
 
-        function handleCoords(coordsList){
+        function handleCoordsList(coordsList){
             let lastCoord = null;
             let length = 0;
             resetCoords();
