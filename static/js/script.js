@@ -15,10 +15,12 @@ function resetCoords(){
 }
 
 const wButton = document.getElementById('wButton');
+let wKeyPressed = false;
 
 // Function to handle the 'W' key press
 function handleKeyDown(event) {
-    if (event.key === 'w' || event.key === 'W') {
+    if ((event.key === 'w' || event.key === 'W') && !wKeyPressed) {
+        wKeyPressed = true;
         console.log("W key is held down");
         wButton.style.backgroundColor = '#0056b3';  // Optional: Change button appearance when active
     }
