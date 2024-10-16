@@ -108,3 +108,10 @@ img {
     border: 2px solid #555;
     border-radius: 8px;
 }
+.spacer-200 {
+    width: 200px;
+}
+
+.spacer-100 {
+    width: 100px;
+}
