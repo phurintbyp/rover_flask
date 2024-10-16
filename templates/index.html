@@ -59,7 +59,7 @@
         <!-- First Row -->
         <div class="row">
             <!-- First row of buttons -->
-            <button class="control-button" onclick="sendCommand('q')">
+            <button class="control-button" id="wButton" onclick="sendCommand('q')">
                 <img src="{{ url_for('static', filename='img/rotateleft.png') }}" alt="Q" class="button-image">
             </button>
             <button class="control-button" onclick="sendCommand('w')">
@@ -109,7 +109,7 @@
         </div>
     
         <div class="row">
-            <button class="stop-button" onclick="sendCommand('stop')">
+            <button class="stop-button" onclick="sendCommand('x')">
                 <img src="{{ url_for('static', filename='img/stop.png') }}" alt="Stop" class="button-image">
             </button>
         </div>
