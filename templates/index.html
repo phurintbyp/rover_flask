@@ -272,7 +272,7 @@
             map.on("draw:created", function (e) {
                 currentLayerType = e.layerType;
                 layer = e.layer;
-                console.log("Drawn layer type:", currentLayerType);
+                console.log(e);
 
                 drawnFeatures.clearLayers();
                 drawnFeatures.addLayer(layer);
