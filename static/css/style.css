@@ -74,20 +74,9 @@ img {
     border-radius: 8px;
 }
 
-/* Style for the map and temperature */
-#data-display {
-    position: absolute;
-    top: 10px;
-    left: 55%; /* Make sure it stays in the right half */
-    z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-    padding: 10px;
-    border-radius: 8px;
-}
-
 #map {
     width: 100%;
-    height: calc(70% - 60px); /* Ensure it takes the rest of the half below the temperature text */
+    height: calc(85% - 60px); /* Ensure it takes the rest of the half below the temperature text */
     margin-top: 60px; /* Give some space for the temperature display */
     border: 2px solid #555;
     border-radius: 8px;
