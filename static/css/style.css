@@ -71,6 +71,12 @@ img {
     cursor: pointer;
 }
 
+.stop-button img {
+    width: 300px;                  /* Adjust the width of the stop button image */
+    height: 60px;                 /* Adjust the height of the stop button image */
+    margin-right: 10px;           /* Add space between the image and the text */
+}
+
 .stop-button:hover {
     background-color: darkred;
 }
