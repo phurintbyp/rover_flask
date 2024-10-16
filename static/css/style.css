@@ -58,17 +58,17 @@ img {
 }
 /* STOP Button */
 .stop-button {
-    width: 400px;
-    height: 80px;
-    background-color: #333;
+    width: 100%;                  /* Take full width of the container */
+    height: 80px;                 /* Adjust height to be 80px */
+    background-color: #FF0000;    /* Red background for the stop button */
     border: 2px solid #555;
     border-radius: 10px;
+    color: white;
+    font-size: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 5px; /* Space between buttons */
+    justify-content: center;      /* Center the content horizontally */
+    align-items: center;          /* Center the content vertically */
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .stop-button:hover {
