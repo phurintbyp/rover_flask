@@ -60,7 +60,7 @@ img {
 .stop-button {
     width: 100%;                  /* Take full width of the container */
     height: 80px;                 /* Adjust height to be 80px */
-    background-color: #FF0000;    /* Red background for the stop button */
+    background-color: #333;
     border: 2px solid #555;
     border-radius: 10px;
     color: white;
@@ -73,12 +73,11 @@ img {
 
 .stop-button img {
     width: 300px;                  /* Adjust the width of the stop button image */
-    height: 60px;                 /* Adjust the height of the stop button image */
-    margin-right: 10px;           /* Add space between the image and the text */
+    height: 60px;                 /* Adjust the height of the stop button image */         /* Add space between the image and the text */
 }
 
 .stop-button:hover {
-    background-color: darkred;
+    background-color: #555;
 }
 
 #data-display {
