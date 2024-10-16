@@ -29,6 +29,7 @@ function handleKeyDown(event) {
 // Function to handle the 'W' key release
 function handleKeyUp(event) {
     if (event.key === 'w' || event.key === 'W') {
+        wKeyPressed = false;
         console.log("W key is released");
         wButton.style.backgroundColor = '';  // Optional: Revert button appearance
     }
