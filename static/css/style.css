@@ -87,7 +87,7 @@ img {
 
 #map {
     width: 100%;
-    height: calc(100% - 60px); /* Ensure it takes the rest of the half below the temperature text */
+    height: calc(70% - 60px); /* Ensure it takes the rest of the half below the temperature text */
     margin-top: 60px; /* Give some space for the temperature display */
     border: 2px solid #555;
     border-radius: 8px;
