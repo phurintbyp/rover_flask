@@ -59,7 +59,7 @@ img {
 /* STOP Button */
 .stop-button {
     width: 80px;
-    height: 80px;
+    height: auto;
     background-color: #333;
     border: 2px solid #555;
     border-radius: 10px;
