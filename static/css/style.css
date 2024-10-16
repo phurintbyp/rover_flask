@@ -24,6 +24,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 10px;
 }
 
 /* Each row in the keyboard */
