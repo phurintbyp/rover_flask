@@ -15,6 +15,7 @@ function resetCoords(){
 }
 
 let keyPressed = {};  // To track which keys are currently pressed
+let activeKey = null; // Track the currently active key
 
 document.addEventListener('keydown', function(event) {
     let key = event.key.toLowerCase();  // Convert key to lowercase for consistency
@@ -24,8 +25,9 @@ document.addEventListener('keydown', function(event) {
         key = 'h';  // Map Spacebar to 'h'
     }
 
-    // Check if the key is already pressed
-    if (!keyPressed[key]) {
+    // Check if any key is already active
+    if (!activeKey) {
+        activeKey = key; // Set active key
         keyPressed[key] = true;  // Mark key as pressed
         console.log(key + " key is held down");
 
@@ -34,11 +36,6 @@ document.addEventListener('keydown', function(event) {
         if (button) {
             button.style.backgroundColor = '#0056b3';
         }
-
-        // Send command
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', '/send_command/' + key, true);
-        xhr.send();
     }
 });
 
@@ -49,8 +46,10 @@ document.addEventListener('keyup', function(event) {
         key = 'h';  // Map Spacebar to 'h'
     }
 
-    if (keyPressed[key]) {
+    // Check if the released key is the active key
+    if (keyPressed[key] && key === activeKey) {
         keyPressed[key] = false;  // Mark key as released
+        activeKey = null; // Reset active key
         console.log(key + " key is released");
 
         // Revert the appearance of the button (optional)
@@ -58,10 +57,5 @@ document.addEventListener('keyup', function(event) {
         if (button) {
             button.style.backgroundColor = '';  // Reset button color
         }
-
-        // Send stop command or any other release-based action
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', '/send_command/stop', true);  // Change 'stop' to the appropriate command
-        xhr.send();
     }
 });
