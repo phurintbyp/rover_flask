@@ -95,9 +95,14 @@
             Generate Path
         </button> -->
         <button 
-        onclick="if (currentLayerType == 'circle'){
+        onclick="
+        if (currentLayerType == 'circle'){
             coordsList = generateCircleCoords(layer._latlng.lat, layer._latlng.lng, layer._mRadius, getNumberFieldValue())
-        }">
+        } else {
+            coordsList = [layer._latlngs];
+        }
+        console.log(coordslist);
+        ">
             Generate Path
         </button>
     </div>
@@ -183,6 +188,30 @@
             const dLat = (lat2 - lat1) * 111320; // Convert degrees to meters
             const dLng = (lng2 - lng1) * 111320 * Math.cos(lat1 * Math.PI / 180);
             return Math.sqrt(dLat ** 2 + dLng ** 2); // Pythagorean theorem
+        }
+
+        function handleCoords(coordsList){
+            let lastCoord = null;
+            let length = 0;
+            resetCoords();
+
+            coordsList.forEach(function(coord, index) {
+                const currentCoord = { i: index, lat: coord.lat, lng: coord.lng };  // Create an object for the current coordinate
+
+                // Check if current coordinate is different from the last sent coordinate
+                if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
+                    handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
+                    length+=1;
+                    console.log(`Coords sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
+                            
+                    // Update the lastCoord to the current one after sending
+                    lastCoord = currentCoord;   
+                } else {
+                    console.log(`Duplicate coordinate, not sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
+                }
+            });
+            console.log("Start sending coords to arduino");
+            sendCoords(length);
         }
 
         // Set initial coordinates of the rover
