@@ -123,7 +123,7 @@ let layer = null;
 let drawPath = false; // Initial value of drawPath
 
 // Get the switch element
-const drawPathSwitch = !(document.getElementById('drawPathSwitch'));
+const drawPathSwitch = document.getElementById('drawPathSwitch');
 
 // Add an event listener to toggle between drawPath being true or false
 drawPathSwitch.addEventListener('change', function() {
@@ -354,16 +354,16 @@ function disableClickControl() {
 enableInputs();
 
 function enableInputs() {
-    document.getElementById('quality').disabled = false;
-    document.getElementById('getValueButton').disabled = false;
-    document.getElementById('generateButton').disabled = false;
-    map.removeControl(drawControl);
-}
-
-// Function to disable the Quality input and Get Value button
-function disableInputs() {
     document.getElementById('quality').disabled = true;
     document.getElementById('getValueButton').disabled = true;
     document.getElementById('generateButton').disabled = true;
     map.addControl(drawControl);
+}
+
+// Function to disable the Quality input and Get Value button
+function disableInputs() {
+    document.getElementById('quality').disabled = false;
+    document.getElementById('getValueButton').disabled = false;
+    document.getElementById('generateButton').disabled = false;
+    map.removeControl(drawControl);
 }
