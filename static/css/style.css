@@ -50,7 +50,7 @@ img {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 70vh; /* Full viewport height */
+    height: 50vh; /* Full viewport height */
 }
 
 /* Each half will take 50% of the container */
@@ -70,7 +70,7 @@ img {
 }
 #map {
     width: 100%;
-    height: 92%; /* Ensure both take up the full height of their container */
+    height: 95%; /* Ensure both take up the full height of their container */
     border: 2px solid #555;
     border-radius: 8px;
 }
