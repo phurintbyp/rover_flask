@@ -123,7 +123,7 @@ let layer = null;
 let drawPath = false; // Initial value of drawPath
 
 // Get the switch element
-const drawPathSwitch = document.getElementById('drawPathSwitch');
+const drawPathSwitch = !(document.getElementById('drawPathSwitch'));
 
 // Add an event listener to toggle between drawPath being true or false
 drawPathSwitch.addEventListener('change', function() {
