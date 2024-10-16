@@ -36,12 +36,12 @@ void receiveData(int byteCount) {
     }
   }
 
-  Serial.println(receivedData);
   if (receivedData.length() != 1){
     if (receivedData.startsWith("max")){
       parseMaxIndex(receivedData);
     } else{
       parseAndStoreCoordinates(receivedData);
+      Serial.println(receivedData);
     }
   }
 
@@ -91,8 +91,6 @@ void parseMaxIndex(String data) {
     if (maxStart != -1) {
         String maxString = data.substring(maxStart + 5);  // Skip "max: "
         maxIndex = maxString.toInt();  // Convert the string to an integer
-        Serial.print("Max value set to: ");
-        Serial.println(maxIndex);
     } else {
         Serial.println("Error: Invalid max value format");
     }
