@@ -55,7 +55,7 @@ img {
 .container {
     display: flex;
     justify-content: space-between;
-    padding-left: 20px;
+    margin-left: 20px;
     width: 100%;
     height: 100vh; /* Full viewport height */
 }
