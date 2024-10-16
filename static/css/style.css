@@ -21,24 +21,30 @@ img {
     height: 480px;
 }
 .control-panel {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columns for button layout */
-    gap: 10px;
-    justify-items: center;
-    margin-bottom: 20px;
-    width: 100%; /* Full width */
+    display: flex;                /* Use flexbox layout */
+    justify-content: center;      /* Center the buttons in the container */
+    align-items: center;          /* Align the buttons vertically */
+    flex-wrap: wrap;              /* Allow buttons to wrap if needed */
+    gap: 5px;                     /* Adjust the gap between buttons */
 }
 .control-button {
-    padding: 0;                /* Remove padding from the button */
-    margin: 0;                 /* Remove margin from the button */
-    border: none;              /* Remove the border if needed */
-    display: flex;
-    justify-content: center;    /* Center the image horizontally */
-    align-items: center;        /* Center the image vertically */
-    background: none;           /* Remove any background colors if needed */
-    width: 100px;               /* Set a width for the button */
-    height: 100px;              /* Set a height for the button */
+    padding: 0;                   /* Remove padding */
+    margin: 0;                    /* Remove margin */
+    border: none;                 /* Remove the border */
+    width: 80px;                  /* Adjust the width of the button */
+    height: 80px;                 /* Adjust the height of the button */
     cursor: pointer;
+    display: flex;
+    justify-content: center;      /* Center the image horizontally */
+    align-items: center;          /* Center the image vertically */
+}
+
+.control-button img {
+    display: block;
+    max-width: 100%;              /* Ensure image scales to fit button */
+    max-height: 100%;             /* Ensure image scales to fit button */
+    padding: 0;
+    margin: 0;
 }
 .control-button:hover {
     background-color: #555; /* Change background on hover */
@@ -56,13 +62,6 @@ img {
     border-radius: 10px;
 }
 
-.control-button img {
-    display: block;             /* Ensure the image is treated as a block element */
-    max-width: 100%;            /* Ensure the image scales properly */
-    max-height: 100%;           /* Ensure the image fits within the button */
-    padding: 0;                 /* Remove any default padding from the image */
-    margin: 0;                  /* Remove margin */
-}
 #data-display {
     margin: 20px;
     font-size: 18px;
