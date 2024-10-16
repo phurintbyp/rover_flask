@@ -116,3 +116,249 @@ buttons.forEach(buttonId => {
         handleButtonRelease(command, buttonId);
     });
 });
+
+let currentLayerType = null;
+let layer = null;
+
+let drawPath = false; // Initial value of drawPath
+
+// Get the switch element
+const drawPathSwitch = document.getElementById('drawPathSwitch');
+
+// Add an event listener to toggle between drawPath being true or false
+drawPathSwitch.addEventListener('change', function() {
+    drawPath = this.checked; // Set drawPath to true if checked, false otherwise
+    toggleDrawPath(); // Call function to toggle the functionality
+});
+
+// Set initial coordinates of the rover
+var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
+
+var map = L.map('map').setView(roverCoords, 13); // Set initial view to rover's location
+
+var drawnFeatures = new L.FeatureGroup();
+map.addLayer(drawnFeatures);
+
+var drawControl = new L.Control.Draw({
+    edit: {
+        featureGroup: drawnFeatures,
+        remove: true
+    }
+});
+map.addControl(drawControl);
+
+// Function to toggle functionality based on drawPath value
+function toggleDrawPath() {
+    if (drawPath) {
+        console.log("Draw path enabled");
+        enableDrawControl(); // Enable draw functionality
+        disableClickControl(); // Disable click functionality
+        enableInputs();
+        drawnFeatures.clearLayers();
+        if (routeControl) {
+            map.removeControl(routeControl); // Remove existing route if any
+        }
+    } else {
+        console.log("Map click functionality enabled");
+        disableDrawControl(); // Disable draw functionality
+        enableClickControl(); // Enable click functionality
+        disableInputs();
+        drawnFeatures.clearLayers();
+        if (routeControl) {
+            map.removeControl(routeControl); // Remove existing route if any
+        }
+    }
+}
+
+function getNumberFieldValue() {
+    const numberField = document.getElementById('quality');
+    const quality = parseInt(numberField.value, 10);  // Convert value to an integer
+    return quality;
+}
+
+function generateCircleCoords(
+    lat, 
+    lng, 
+    radius, // Radius in meters
+    quality
+) {
+    console.log("Generating Coords");
+    const coords = []; // Array to store coordinates
+    const numPoints = Math.floor(quality * (radius / 100)); // Adjust points based on radius and quality
+
+    // Step 1: Calculate initial points around the circle
+    for (let i = 0; i < numPoints; i++) {
+        const angle = (2 * Math.PI / numPoints) * i; // Angle in radians
+
+        // Calculate new latitude and longitude using basic trigonometry
+        const newLat = lat + (radius / 111320) * Math.cos(angle);
+        const newLng = lng + (radius / (111320 * Math.cos(lat * Math.PI / 180))) * Math.sin(angle);
+
+        coords.push([newLat, newLng]); // Store the initial coordinate
+    }
+
+    // Step 2: Calculate the mean distance from the center
+    let totalDistance = 0;
+    coords.forEach(([lat2, lng2]) => {
+        const dist = euclideanDistance(lat, lng, lat2, lng2);
+        totalDistance += dist;
+    });
+
+    const meanDistance = totalDistance / numPoints; // Mean distance
+
+    // Step 3: Adjust each coordinate to align with the desired radius
+    const adjustedCoords = coords.map(([lat2, lng2]) => {
+        const dist = euclideanDistance(lat, lng, lat2, lng2);
+        const adjustment = radius / dist;
+
+        // Adjust the latitude and longitude proportionally
+        const adjustedLat = lat + (lat2 - lat) * adjustment;
+        const adjustedLng = lng + (lng2 - lng) * adjustment;
+
+        return [adjustedLat, adjustedLng];
+    });
+
+    console.log("Adjusted Coords:", adjustedCoords);
+    return adjustedCoords;
+}
+
+// Helper function to calculate Euclidean distance between two points
+function euclideanDistance(lat1, lng1, lat2, lng2) {
+    const dLat = (lat2 - lat1) * 111320; // Convert degrees to meters
+    const dLng = (lng2 - lng1) * 111320 * Math.cos(lat1 * Math.PI / 180);
+    return Math.sqrt(dLat ** 2 + dLng ** 2); // Pythagorean theorem
+}
+
+function handleCoordsList(coordsList){
+    let lastCoord = null;
+    let length = 0;
+    resetCoords();
+
+    coordsList.forEach(function(coord, index) {
+        const currentCoord = {
+            i: index,
+            lat: parseFloat(coord[0].toFixed(4)),  // Limit latitude to 4 decimal places
+            lng: parseFloat(coord[1].toFixed(4))   // Limit longitude to 4 decimal places
+        };
+
+        // Check if current coordinate is different from the last sent coordinate
+        if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
+            handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);  // Send the coordinate if it's not a duplicate
+            length+=1;
+            console.log(`Coords sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
+                    
+            // Update the lastCoord to the current one after sending
+            lastCoord = currentCoord;   
+        } else {
+            console.log(`Duplicate coordinate, not sent!\nIndex: ${index}\nlat: ${currentCoord.lat}\nlong: ${currentCoord.lng}`);
+        }
+    });
+    console.log("Start sending coords to arduino");
+    sendCoords(length);
+}
+
+function enableDrawControl(){
+    map.on("draw:created", function (e) {
+        currentLayerType = e.layerType;
+        layer = e.layer;
+        console.log(e);
+
+        drawnFeatures.clearLayers();
+        drawnFeatures.addLayer(layer);
+
+        layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`);
+    });
+
+    map.on("draw:edited", function(e){
+        var layers = e.layers;
+        var type = e.layerType;
+
+        layers.eachLayer(function(layer){
+            console.log(layer);
+        })
+
+        if(layerType=='marker'){
+            //Do something
+        }
+    })
+
+    map.on("draw:deleted", function (e) {
+        var layers = e.layers;
+        layers.eachLayer(function (layer) {
+            console.log('Deleted Layer:', layer);
+        });
+    });
+}
+
+function disableDrawControl() {
+    map.off("draw:created"); // Disable draw:created event listener
+    map.off("draw:edited");
+    map.off("draw:deleted");
+}
+
+// Add OpenStreetMap tile layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Marker for the rover
+var roverMarker = L.marker(roverCoords).addTo(map).bindPopup("Rover is here").openPopup();
+
+var routeControl;
+
+// Enable map click functionality
+function enableClickControl() {
+    map.on('click', function (e) {
+        var destination = e.latlng;
+
+        if (routeControl) {
+            map.removeControl(routeControl); // Remove existing route if any
+        }
+
+        // Create a new route
+        routeControl = L.Routing.control({
+            waypoints: [
+                L.latLng(roverCoords), // Start at the rover's current position
+                L.latLng(destination)   // End at the clicked location
+            ],
+            routeWhileDragging: true
+        }).on('routesfound', function (e) {
+            console.log("Route found:", e);
+            let lastCoord = null;
+            let length = 0;
+            resetCoords();
+
+            e.routes[0].coordinates.forEach(function (coord, index) {
+                const currentCoord = { i: index, lat: coord.lat, lng: coord.lng };
+                if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
+                    handleCoords(currentCoord.i, currentCoord.lat, currentCoord.lng);
+                    length++;
+                    console.log(`Coords sent: \nIndex: ${index}, \nlat: ${currentCoord.lat}, \nlng: ${currentCoord.lng}`);
+
+                    lastCoord = currentCoord;
+                } else {
+                    console.log(`Duplicate coord, not sent: \nIndex: ${index}, \nlat: ${currentCoord.lat}, \nlng: ${currentCoord.lng}`);
+                }
+            });
+            console.log("Start sending coords to Arduino");
+            sendCoords(length);
+        }).addTo(map);
+    });
+}
+
+// Disable map click functionality
+function disableClickControl() {
+    map.off('click'); // Disable the click event listener
+}
+
+function enableInputs() {
+    document.getElementById('quality').disabled = false;
+    document.getElementById('getValueButton').disabled = false;
+    document.getElementById('generateButton').disabled = false;
+}
+
+// Function to disable the Quality input and Get Value button
+function disableInputs() {
+    document.getElementById('quality').disabled = true;
+    document.getElementById('getValueButton').disabled = true;
+}
