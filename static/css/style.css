@@ -57,13 +57,14 @@ img {
 .half {
     width: 50%;
     align-items: center;
+    justify-content: center;
     box-sizing: border-box;
     padding: 10px;
 }
 
 /* Style for the camera feed */
 #camera-feed img{
-    width: 100%;
+    width: auto;
     height: 100%; /* Ensure both take up the full height of their container */
     border: 2px solid #555;
     border-radius: 8px;
