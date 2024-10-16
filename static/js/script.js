@@ -14,27 +14,54 @@ function resetCoords(){
     fetch(`/reset_coords`);
 }
 
-const wButton = document.getElementById('wButton');
-let wKeyPressed = false;
+let keyPressed = {};  // To track which keys are currently pressed
 
-// Function to handle the 'W' key press
-function handleKeyDown(event) {
-    if ((event.key === 'w' || event.key === 'W') && !wKeyPressed) {
-        wKeyPressed = true;
-        console.log("W key is held down");
-        wButton.style.backgroundColor = '#0056b3';  // Optional: Change button appearance when active
+document.addEventListener('keydown', function(event) {
+    let key = event.key.toLowerCase();  // Convert key to lowercase for consistency
+
+    // Handle Spacebar separately
+    if (key === ' ') {
+        key = 'h';  // Map Spacebar to 'h'
     }
-}
 
-// Function to handle the 'W' key release
-function handleKeyUp(event) {
-    if (event.key === 'w' || event.key === 'W') {
-        wKeyPressed = false;
-        console.log("W key is released");
-        wButton.style.backgroundColor = '';  // Optional: Revert button appearance
+    // Check if the key is already pressed
+    if (!keyPressed[key]) {
+        keyPressed[key] = true;  // Mark key as pressed
+        console.log(key + " key is held down");
+
+        // Change the appearance of the button (optional)
+        const button = document.querySelector(`#${key}Button`);
+        if (button) {
+            button.style.backgroundColor = '#0056b3';
+        }
+
+        // Send command
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/send_command/' + key, true);
+        xhr.send();
     }
-}
+});
 
-// Add event listeners for keydown and keyup
-document.addEventListener('keydown', handleKeyDown);
-document.addEventListener('keyup', handleKeyUp);
+document.addEventListener('keyup', function(event) {
+    let key = event.key.toLowerCase();
+
+    if (key === ' ') {
+        key = 'h';  // Map Spacebar to 'h'
+    }
+
+    if (keyPressed[key]) {
+        keyPressed[key] = false;  // Mark key as released
+        console.log(key + " key is released");
+
+        // Revert the appearance of the button (optional)
+        const button = document.querySelector(`#${key}Button`);
+        if (button) {
+            button.style.backgroundColor = '';  // Reset button color
+        }
+
+        // Send stop command or any other release-based action
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/send_command/stop', true);  // Change 'stop' to the appropriate command
+        xhr.send();
+    }
+});

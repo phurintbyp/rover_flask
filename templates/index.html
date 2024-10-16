@@ -59,24 +59,24 @@
         <!-- First Row -->
         <div class="row">
             <!-- First row of buttons -->
-            <button class="control-button" id="wButton" onclick="sendCommand('q')">
+            <button class="control-button" id="qButton" onclick="sendCommand('q')">
                 <img src="{{ url_for('static', filename='img/rotateleft.png') }}" alt="Q" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('w')">
+            <button class="control-button" id="wButton" onclick="sendCommand('w')">
                 <img src="{{ url_for('static', filename='img/forward.png') }}" alt="W" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('e')">
+            <button class="control-button" id="eButton" onclick="sendCommand('e')">
                 <img src="{{ url_for('static', filename='img/rotateright.png') }}" alt="E" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('r')">
+            <button class="control-button" id="rButton" onclick="sendCommand('r')">
                 <img src="{{ url_for('static', filename='img/diagonalright.png') }}" alt="R" class="button-image">
             </button>
             <div class="spacer-200"></div>
-            <button class="control-button" onclick="sendCommand('u')">
+            <button class="control-button" id="uButton" onclick="sendCommand('u')">
                 <img src="{{ url_for('static', filename='img/bigleft.png') }}" alt="U" class="button-image">
             </button>
             <div class="spacer-100"></div>
-            <button class="control-button" onclick="sendCommand('o')">
+            <button class="control-button" id="oButton" onclick="sendCommand('o')">
                 <img src="{{ url_for('static', filename='img/bigright.png') }}" alt="O" class="button-image">
             </button>
         </div>
@@ -84,32 +84,32 @@
         <div class="row">
             <!-- Second row of buttons -->
              <div class="spacer-30"></div>
-            <button class="control-button" onclick="sendCommand('a')">
+            <button class="control-button" id="aButton" onclick="sendCommand('a')">
                 <img src="{{ url_for('static', filename='img/crableft.png') }}" alt="A" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('s')">
+            <button class="control-button" id="sButton" onclick="sendCommand('s')">
                 <img src="{{ url_for('static', filename='img/reverse.png') }}" alt="S" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('d')">
+            <button class="control-button" id="dButton" onclick="sendCommand('d')">
                 <img src="{{ url_for('static', filename='img/crabright.png') }}" alt="D" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('f')">
+            <button class="control-button" id="fButton" onclick="sendCommand('f')">
                 <img src="{{ url_for('static', filename='img/diagonalleft.png') }}" alt="F" class="button-image">
             </button>
             <div class="spacer-200"></div>
-            <button class="control-button" onclick="sendCommand('j')">
+            <button class="control-button" id="jButton" onclick="sendCommand('j')">
                 <img src="{{ url_for('static', filename='img/smallleft.png') }}" alt="J" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('k')">
+            <button class="control-button" id="kButton" onclick="sendCommand('k')">
                 <img src="{{ url_for('static', filename='img/center.png') }}" alt="K" class="button-image">
             </button>
-            <button class="control-button" onclick="sendCommand('l')">
+            <button class="control-button" id="lButton" onclick="sendCommand('l')">
                 <img src="{{ url_for('static', filename='img/smallright.png') }}" alt="L" class="button-image">
             </button>
         </div>
     
         <div class="row">
-            <button class="stop-button" onclick="sendCommand('x')">
+            <button class="stop-button" id="hButton" onclick="sendCommand('h')">
                 <img src="{{ url_for('static', filename='img/stop.png') }}" alt="Stop" class="button-image">
             </button>
         </div>
