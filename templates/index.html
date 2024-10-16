@@ -106,7 +106,18 @@
         ">
             Generate Path
         </button>
+        <label for="drawPathSwitch">Enable Draw Path</label>
+        <input type="checkbox" id="drawPathSwitch" />
     </div>
+
+    <script>
+        let drawPath = false; 
+
+        const drawPathSwitch = document.getElementById('drawPathSwitch');
+        drawPathSwitch.addEventListener('change', function() {
+            drawPath = this.checked;
+        });
+    </script>
 
     <div class="control-panel">
         <button class="control-button" onclick="sendCommand('w')">Forward</button>
@@ -129,6 +140,7 @@
 
     <!-- Initialize the map and routing -->
     <script>
+        // Enable when drawPath is True
         let currentLayerType = null;
         let layer = null;
 
@@ -271,6 +283,8 @@
         var roverMarker = L.marker(roverCoords).addTo(map).bindPopup("Rover is here").openPopup();
 
         var routeControl;
+
+        // Enable when drawPath is False
 
         // map.on('click', function(e) {
         //     var destination = e.latlng;
