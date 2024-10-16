@@ -58,15 +58,15 @@ img {
 }
 /* STOP Button */
 .stop-button {
-    width: 200px;
+    width: 80px;
     height: 80px;
-    background-color: red;
+    background-color: #333;
+    border: 2px solid #555;
     border-radius: 10px;
-    color: white;
-    font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 5px; /* Space between buttons */
     cursor: pointer;
     transition: background-color 0.3s;
 }
