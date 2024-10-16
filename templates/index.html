@@ -19,17 +19,23 @@
 <body>
     <h1>Rover Control Panel</h1>
     
-    <div id="camera-feed">
-        <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+    <div class="container">
+        <!-- Camera feed will take half of the container -->
+        <div id="camera-feed" class="half">
+            <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+        </div>
+    
+        <!-- Temperature and Map will take the other half -->
+        <div class="half">
+            <div id="data-display">
+                <h2>Raspberry Pi Temperature:</h2>
+                <p id="temperature">Loading...</p>
+            </div>    
+    
+            <!-- Map Container -->
+            <div id="map"></div>
+        </div>
     </div>
-
-    <div id="data-display">
-        <h2>Raspberry Pi Temperature:</h2>
-        <p id="temperature">Loading...</p>
-    </div>    
-
-    <!-- Map Container -->
-    <div id="map"></div>
     <div>
         <label for="quality">Quality: </label>
         <input type="number" id="quality" value="10" min="0" max="100"/>
