@@ -29,17 +29,16 @@ img {
     width: 100%; /* Full width */
 }
 .control-button {
-    width: 100px; /* Set width for buttons */
-    height: 100px; /* Set height for buttons */
-    background-color: #333; /* Background color */
-    color: white;
-    border: none;
-    border-radius: 10px; /* Rounded corners */
+    padding: 0;                /* Remove padding from the button */
+    margin: 0;                 /* Remove margin from the button */
+    border: none;              /* Remove the border if needed */
     display: flex;
-    justify-content: center; /* Center the image/text */
-    align-items: center;      /* Center the image/text */
+    justify-content: center;    /* Center the image horizontally */
+    align-items: center;        /* Center the image vertically */
+    background: none;           /* Remove any background colors if needed */
+    width: 100px;               /* Set a width for the button */
+    height: 100px;              /* Set a height for the button */
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 .control-button:hover {
     background-color: #555; /* Change background on hover */
@@ -58,8 +57,11 @@ img {
 }
 
 .control-button img {
-    width: 60px; /* Set the image size */
-    height: 60px;
+    display: block;             /* Ensure the image is treated as a block element */
+    max-width: 100%;            /* Ensure the image scales properly */
+    max-height: 100%;           /* Ensure the image fits within the button */
+    padding: 0;                 /* Remove any default padding from the image */
+    margin: 0;                  /* Remove margin */
 }
 #data-display {
     margin: 20px;
