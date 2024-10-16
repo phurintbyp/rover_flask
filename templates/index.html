@@ -100,9 +100,9 @@
             coordsList = generateCircleCoords(layer._latlng.lat, layer._latlng.lng, layer._mRadius, getNumberFieldValue())
         } else if(currentLayerType == 'polyline'){
             coordsList = layer._latlngs
-            handleCoordsList(coordsList);
         }
         console.log(coordsList);
+        handleCoordsList(coordsList);
         ">
             Generate Path
         </button>
@@ -250,7 +250,11 @@
             resetCoords();
 
             coordsList.forEach(function(coord, index) {
-                const currentCoord = { i: index, lat: coord.lat, lng: coord.lng };  // Create an object for the current coordinate
+                const currentCoord = {
+                    i: index,
+                    lat: parseFloat(coord.lat.toFixed(4)),  // Limit latitude to 4 decimal places
+                    lng: parseFloat(coord.lng.toFixed(4))   // Limit longitude to 4 decimal places
+                };
 
                 // Check if current coordinate is different from the last sent coordinate
                 if (!lastCoord || lastCoord.lat !== currentCoord.lat || lastCoord.lng !== currentCoord.lng) {
