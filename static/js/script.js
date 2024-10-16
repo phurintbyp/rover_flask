@@ -22,24 +22,30 @@ let keyPressed = {};  // To track which keys are currently pressed
 let activeKey = null; // Track the currently active key
 let releaseTimeout;
 
+// Allowed keys
+const allowedKeys = ['q', 'w', 'e', 'r', 'u', 'o', 'a', 's', 'd', 'f', 'j', 'k', 'l', 'h'];
+
+// Map spacebar to 'h'
 document.addEventListener('keydown', function(event) {
     let key = event.key.toLowerCase();  // Convert key to lowercase for consistency
 
-    // Handle Spacebar separately
     if (key === ' ') {
-        key = 'h';  // Map Spacebar to 'h'
+        key = 'h';  // Map spacebar to 'h'
     }
 
-    // Check if any key is already active
-    if (!activeKey) {
-        activeKey = key; // Set active key
-        keyPressed[key] = true;  // Mark key as pressed
-        console.log(key + " key is held down");
+    // Check if the key is allowed
+    if (allowedKeys.includes(key)) {
+        // Check if any key is already active
+        if (!activeKey) {
+            activeKey = key; // Set active key
+            keyPressed[key] = true;  // Mark key as pressed
+            console.log(key + " key is held down");
 
-        // Change the appearance of the button (optional)
-        const button = document.querySelector(`#${key}Button`);
-        if (button) {
-            button.style.backgroundColor = '#0056b3';
+            // Change the appearance of the button (optional)
+            const button = document.querySelector(`#${key}Button`);
+            if (button) {
+                button.style.backgroundColor = '#0056b3';
+            }
         }
     }
 });
@@ -48,23 +54,27 @@ document.addEventListener('keyup', function(event) {
     let key = event.key.toLowerCase();
 
     if (key === ' ') {
-        key = 'h';  // Map Spacebar to 'h'
+        key = 'h';  // Map spacebar to 'h'
     }
 
-    // Check if the released key is the active key
-    if (keyPressed[key] && key === activeKey) {
-        keyPressed[key] = false;  // Mark key as released
-        activeKey = null; // Reset active key
-        console.log(key + " key is released");
+    // Check if the key is allowed
+    if (allowedKeys.includes(key)) {
+        // Check if the released key is the active key
+        if (keyPressed[key] && key === activeKey) {
+            keyPressed[key] = false;  // Mark key as released
+            activeKey = null; // Reset active key
+            console.log(key + " key is released");
 
-        // Revert the appearance of the button (optional)
-        const button = document.querySelector(`#${key}Button`);
-        if (button) {
-            button.style.backgroundColor = '';  // Reset button color
+            // Revert the appearance of the button (optional)
+            const button = document.querySelector(`#${key}Button`);
+            if (button) {
+                button.style.backgroundColor = '';  // Reset button color
+            }
         }
     }
 });
 
+// Handle button presses with mouse events
 function handleButtonPress(command, buttonId) {
     // Check if no key is currently active
     if (!activeKey) {
@@ -351,7 +361,7 @@ function disableClickControl() {
 }
 
 // Initially enable route finding
-enableInputs();
+disableInputs();
 
 function enableInputs() {
     document.getElementById('quality').disabled = true;
