@@ -106,7 +106,7 @@ function handleButtonRelease(command, buttonId) {
             if (button) {
                 button.style.backgroundColor = '';
             }
-        }, 200);  // Delay of 200ms (adjust as needed)
+        }, 100);
     }
 }
 
