@@ -45,7 +45,7 @@ img {
     align-items: center;
     margin-right: 5px; /* Space between buttons */
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
 
 .control-button img {
@@ -69,7 +69,7 @@ img {
     justify-content: center;      /* Center the content horizontally */
     align-items: center;          /* Center the content vertically */
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
 
 .stop-button img {

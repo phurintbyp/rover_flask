@@ -59,3 +59,51 @@ document.addEventListener('keyup', function(event) {
         }
     }
 });
+
+function handleButtonPress(command, buttonId) {
+    // Check if no key is currently active
+    if (!activeKey) {
+        activeKey = command;  // Set the command as the active key
+        keyPressed[command] = true;  // Mark the command as pressed
+        console.log(command + " button is pressed");
+
+        // Change the appearance of the button
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.style.backgroundColor = '#0056b3';  // Optional: Change button appearance
+        }
+    }
+}
+
+// Function to handle button release (similar to keyup)
+function handleButtonRelease(command, buttonId) {
+    // Check if the released button corresponds to the active key
+    if (keyPressed[command] && command === activeKey) {
+        keyPressed[command] = false;  // Mark the command as released
+        activeKey = null;  // Reset the active key
+        console.log(command + " button is released");
+
+        // Revert the appearance of the button
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.style.backgroundColor = '';  // Reset button appearance
+        }
+    }
+}
+
+const buttons = ('qButton', 'wButton', 'eButton', 'rButton', 'uButton', 'oButton', 'aButton', 'sButton', 'dButton', 'fButton', 'jButton', 'kButton', 'lButton', 'hButton');
+
+buttons.forEach(buttonId => {
+    // Get the command from the buttonId (remove 'Button' and convert to lowercase)
+    const command = buttonId.charAt(0).toLowerCase();
+
+    // Add mousedown listener (for pressing the button)
+    document.getElementById(buttonId).addEventListener('mousedown', function() {
+        handleButtonPress(command, buttonId);
+    });
+
+    // Add mouseup listener (for releasing the button)
+    document.getElementById(buttonId).addEventListener('mouseup', function() {
+        handleButtonRelease(command, buttonId);
+    });
+});
