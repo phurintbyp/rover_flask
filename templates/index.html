@@ -20,14 +20,21 @@
     <h1>Rover Control Panel</h1>
     
     <div class="container">
-        <!-- Camera feed will take half of the container -->
-        <div id="camera-feed" class="half">
-            <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+        <!-- Left column for camera feed and map -->
+        <div class="left-column">
+            <!-- Camera feed on top -->
+            <div id="camera-feed">
+                <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+            </div>
+    
+            <!-- Map on the bottom -->
+            <div id="map"></div>
         </div>
     
-        <!-- Temperature and Map will take the other half -->
-        <div class="half">
-            <div id="map"></div>
+        <!-- Right column for controls -->
+        <div class="right-column">
+            <h2>Controls</h2>
+            <!-- Add control buttons or other content here -->
         </div>
     </div>
     <p id="temperature">Loading...</p>
