@@ -98,8 +98,9 @@
         onclick="
         if (currentLayerType == 'circle'){
             coordsList = generateCircleCoords(layer._latlng.lat, layer._latlng.lng, layer._mRadius, getNumberFieldValue())
-        } else {
-            coordsList = layer._latlngs;
+        } else if(currentLayerType == 'polyline'){
+            coordsList = layer._latlngs
+            handleCoords(coordsList);
         }
         console.log(coordsList);
         ">
