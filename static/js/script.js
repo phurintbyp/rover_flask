@@ -61,8 +61,24 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
+function handleButtonPress(command, buttonId) {
+    // Check if no key is currently active
+    if (!activeKey) {
+        activeKey = command;  // Set the command as the active key
+        keyPressed[command] = true;  // Mark the command as pressed
+        console.log(command + " button is pressed");
+
+        // Change the appearance of the button
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.style.backgroundColor = '#0056b3';  // Optional: Change button appearance
+        }
+    }
+}
+
 function handleButtonRelease(command, buttonId) {
     if (keyPressed[command] && command === activeKey) {
+        // Clear any previous timeout to avoid multiple triggers
         clearTimeout(releaseTimeout);
 
         // Add delay before resetting the button and sending 'stop' command
@@ -77,22 +93,6 @@ function handleButtonRelease(command, buttonId) {
                 button.style.backgroundColor = '';
             }
         }, 200);  // Delay of 200ms (adjust as needed)
-    }
-}
-
-// Function to handle button release (similar to keyup)
-function handleButtonRelease(command, buttonId) {
-    // Check if the released button corresponds to the active key
-    if (keyPressed[command] && command === activeKey) {
-        keyPressed[command] = false;  // Mark the command as released
-        activeKey = null;  // Reset the active key
-        console.log(command + " button is released");
-
-        // Revert the appearance of the button
-        const button = document.getElementById(buttonId);
-        if (button) {
-            button.style.backgroundColor = '';  // Reset button appearance
-        }
     }
 }
 
