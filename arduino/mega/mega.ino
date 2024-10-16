@@ -72,7 +72,7 @@ void parseAndStoreCoordinates(String data) {
     float longitude = lonStr.toFloat();
 
     // Store in the array if there's space
-    if (coordIndex < maxIndex) {  // Ensure we don't exceed array bounds
+    if (coordIndex < 200) {  // Ensure we don't exceed array bounds
       coords[coordIndex].latitude = latitude;
       coords[coordIndex].longitude = longitude;
       coordIndex++;  // Increment index for the next coordinate
