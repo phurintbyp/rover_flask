@@ -22,24 +22,44 @@ img {
 }
 .control-panel {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for button layout */
     gap: 10px;
+    justify-items: center;
     margin-bottom: 20px;
-    max-width: 600px;
-    width: 100%;
+    width: 100%; /* Full width */
 }
 .control-button {
-    padding: 15px;
-    font-size: 16px;
-    background-color: #007BFF;
+    width: 100px; /* Set width for buttons */
+    height: 100px; /* Set height for buttons */
+    background-color: #333; /* Background color */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px; /* Rounded corners */
+    display: flex;
+    justify-content: center; /* Center the image/text */
+    align-items: center;      /* Center the image/text */
     cursor: pointer;
     transition: background-color 0.3s;
 }
 .control-button:hover {
-    background-color: #0056b3;
+    background-color: #555; /* Change background on hover */
+}
+.stop-button {
+    grid-column: span 4; /* Span across 4 columns */
+    height: 60px;
+    font-size: 20px;
+    background-color: #FF0000; /* Red background for stop */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.control-button img {
+    width: 60px; /* Set the image size */
+    height: 60px;
 }
 #data-display {
     margin: 20px;
