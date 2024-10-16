@@ -56,7 +56,7 @@ img {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 100vh; /* Full viewport height */
+    height: 70vh; /* Full viewport height */
 }
 
 /* Each half will take 50% of the container */
