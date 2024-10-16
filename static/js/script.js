@@ -377,3 +377,40 @@ function disableInputs() {
     document.getElementById('generateButton').disabled = false;
     map.removeControl(drawControl);
 }
+
+// Fetch Temperature
+let temperatureInterval;
+
+function fetchTemperature() {
+    fetch('/temperature')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server stopped or unreachable');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('temperature').innerText = `${data.temperature} °C`;
+        })
+        .catch(error => {
+            console.error('Error fetching temperature:', error);
+            stopTemperatureFetch();  // Stop further fetching if the server is down
+        });
+}
+
+function startTemperatureFetch() {
+    temperatureInterval = setInterval(fetchTemperature, 5000);  // Fetch every 5 seconds
+}
+
+function stopTemperatureFetch() {
+    if (temperatureInterval) {
+        clearInterval(temperatureInterval);
+        console.log('Stopped fetching temperature');
+    }
+}
+
+// Start fetching the temperature when the page loads
+window.addEventListener('load', startTemperatureFetch);
+
+// Stop fetching the temperature when the user closes the page or server stops
+window.addEventListener('beforeunload', stopTemperatureFetch);
