@@ -146,6 +146,22 @@
             toggleDrawPath(); // Call function to toggle the functionality
         });
 
+        // Set initial coordinates of the rover
+        var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
+
+        var map = L.map('map').setView(roverCoords, 13); // Set initial view to rover's location
+
+        var drawnFeatures = new L.FeatureGroup();
+        map.addLayer(drawnFeatures);
+
+        var drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnFeatures,
+                remove: true
+            }
+        });
+        map.addControl(drawControl);
+
         // Function to toggle functionality based on drawPath value
         function toggleDrawPath() {
             if (drawPath) {
@@ -153,11 +169,19 @@
                 enableDrawControl(); // Enable draw functionality
                 disableClickControl(); // Disable click functionality
                 enableInputs();
+                drawnFeatures.clearLayers();
+                if (routeControl) {
+                    map.removeControl(routeControl); // Remove existing route if any
+                }
             } else {
                 console.log("Map click functionality enabled");
                 disableDrawControl(); // Disable draw functionality
                 enableClickControl(); // Enable click functionality
                 disableInputs();
+                drawnFeatures.clearLayers();
+                if (routeControl) {
+                    map.removeControl(routeControl); // Remove existing route if any
+                }
             }
         }
 
@@ -243,22 +267,6 @@
             console.log("Start sending coords to arduino");
             sendCoords(length);
         }
-
-        // Set initial coordinates of the rover
-        var roverCoords = [13.7271, 100.7747 ];  // This should be updated with actual rover coordinates
-
-        var map = L.map('map').setView(roverCoords, 13); // Set initial view to rover's location
-
-        var drawnFeatures = new L.FeatureGroup();
-        map.addLayer(drawnFeatures);
-
-        var drawControl = new L.Control.Draw({
-            edit: {
-                featureGroup: drawnFeatures,
-                remove: true
-            }
-        });
-        map.addControl(drawControl);
 
         function enableDrawControl(){
             map.on("draw:created", function (e) {
