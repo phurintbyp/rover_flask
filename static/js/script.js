@@ -25,13 +25,9 @@ function fetchRoverPosition() {
             return response.json();
         })
         .then(data => {
-            console.log("Original data received:", data);
 
-            // Remove non-ASCII characters (like 'ÿ') from the received string
             const cleanedData = data.replace(/[^\x20-\x7E]/g, '');  // Keep only printable ASCII characters
-            console.log("Cleaned data:", cleanedData);
 
-            // Debug the cleaned string structure
             const latLngMatch = cleanedData.match(/lt:\s*(\d+\.\d+)\s+lg:\s*(\d+\.\d+)/);  // Adjust for optional spaces around the colons
             if (latLngMatch) {
                 const lat = parseFloat(latLngMatch[1]);
