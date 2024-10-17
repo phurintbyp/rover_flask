@@ -38,7 +38,7 @@ void receiveData(int byteCount) {
       receivedData += c;  // Append the valid character to the buffer
     }
   }
-
+  Serial.println(receivedData);
   if (receivedData.length() != 1){
     if (receivedData.startsWith("max")){
       parseMaxIndex(receivedData);

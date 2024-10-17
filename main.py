@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, jsonify  # Import jsonify
+from flask import Flask, render_template, Response, jsonify, request  # Import jsonify
 from picamera2 import Picamera2
 import cv2
 import smbus2
@@ -133,6 +133,20 @@ def get_position():
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # Return error message with HTTP 500 status
 
+@app.route('/send_diameter', methods=['POST'])
+def send_diameter():
+    try:
+        data = request.json  # Get the data from the request
+        diameter = data.get('diameter')
+
+        if diameter is not None:
+            # Use your existing send_string function to send the diameter over I2C
+            send_string(diameter)  # Send diameter to the Arduino via I2C
+            return jsonify({'status': 'success'}), 200
+        else:
+            return jsonify({'error': 'No diameter provided'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':

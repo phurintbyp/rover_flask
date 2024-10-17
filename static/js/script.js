@@ -334,6 +334,35 @@ function disableDrawControl() {
     map.off("draw:deleted");
 }
 
+function sendDiameter() {
+    const diameterInput = document.getElementById('diameter');
+    const diameter = parseInt(diameterInput.value, 10);
+
+    // Prepare the data to send
+    const requestData = {
+        diameter: diameter.toString()
+    };
+
+    // Send the diameter to the server
+    fetch('/send_diameter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Diameter sent successfully!');
+        } else {
+            console.error('Failed to send diameter');
+        }
+    })
+    .catch(error => {
+        console.error('Error sending diameter:', error);
+    });
+}
+
 // Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
