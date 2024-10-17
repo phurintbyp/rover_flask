@@ -4,7 +4,6 @@ import cv2
 import smbus2
 import time
 import os
-import re
 
 app = Flask(__name__)
 
@@ -127,29 +126,12 @@ def temperature():
 def get_position():
     try:
         data = bus.read_i2c_block_data(ARDUINO_ADDRESS, 0, 32)
-
+        
         # Convert the received bytes into a string
-        received_string = ''.join([chr(b) for b in data if chr(b).isprintable() and b != 0])
-        
-        # Debugging: Print the received string
-        print(f"Received string: {received_string}")
-        
-        # Assuming the received string is something like "lt:13.7776 lg:100.3456"
-        # Parse the string to extract latitude and longitude
-        lat_lng_match = re.match(r"lt:(\d+\.\d+) lg:(\d+\.\d+)", received_string)
-
-        if lat_lng_match:
-            lat = float(lat_lng_match.group(1))
-            lng = float(lat_lng_match.group(2))
-            return jsonify({'lat': lat, 'lng': lng})  # Return as a JSON object
-        else:
-            return jsonify({'error': 'Invalid data format'}), 400
-
+        received_string = ''.join([chr(b) for b in data if b != 0])
+        return jsonify(received_string)
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # Return error message with HTTP 500 status
-
-
-
 
 
 
