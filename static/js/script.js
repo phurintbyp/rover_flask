@@ -25,12 +25,20 @@ function fetchRoverPosition() {
             return response.json();
         })
         .then(data => {
-            console.log(data);
-            const { lt, lg } = data;  // Assuming the API returns {lat: ..., lng: ...}
-            console.log(`New rover position: lat=${lt}, lng=${lg}`);
+            console.log("Received data:", data);
 
-            // Update the rover marker position
-            // roverMarker.setLatLng([lat, lng]).update();
+            // Extract lat and lng from the string (assuming it's in the format "lt:13.7776 lg:100.3456")
+            const latLngMatch = data.match(/lt:(\d+\.\d+)\s+lg:(\d+\.\d+)/);
+            if (latLngMatch) {
+                const lat = parseFloat(latLngMatch[1]);
+                const lng = parseFloat(latLngMatch[2]);
+                console.log(`New rover position: lat=${lat}, lng=${lng}`);
+
+                // Update the rover marker position
+                roverMarker.setLatLng([lat, lng]).update();
+            } else {
+                console.error("Error: Failed to parse latitude and longitude from the string");
+            }
         })
         .catch(error => {
             console.error('Error fetching rover position:', error);
