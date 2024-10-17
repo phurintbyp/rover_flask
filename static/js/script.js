@@ -366,14 +366,14 @@ disableInputs();
 function enableInputs() {
     document.getElementById('quality').disabled = true;
     document.getElementById('getValueButton').disabled = true;
-    map.addControl(drawControl);
+    map.removeControl(drawControl);
 }
 
 // Function to disable the Quality input and Get Value button
 function disableInputs() {
     document.getElementById('quality').disabled = false;
     document.getElementById('getValueButton').disabled = false;
-    map.removeControl(drawControl);
+    map.addControl(drawControl);
 }
 
 // Fetch Temperature
