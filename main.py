@@ -127,9 +127,9 @@ def temperature():
 def get_position():
     try:
         data = bus.read_i2c_block_data(ARDUINO_ADDRESS, 0, 32)
-        
+
         # Convert the received bytes into a string
-        received_string = ''.join([chr(b) for b in data if b != 0])
+        received_string = ''.join([chr(b) for b in data if chr(b).isprintable() and b != 0])
         
         # Debugging: Print the received string
         print(f"Received string: {received_string}")
@@ -147,6 +147,7 @@ def get_position():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # Return error message with HTTP 500 status
+
 
 
 
