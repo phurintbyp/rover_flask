@@ -31,8 +31,8 @@ function fetchRoverPosition() {
             const cleanedData = data.replace(/[^\x20-\x7E]/g, '');  // Keep only printable ASCII characters
             console.log("Cleaned data:", cleanedData);
 
-            // Extract lat and lng from the cleaned string (assuming it's in the format "lt:13.7776 lg:100.3456")
-            const latLngMatch = cleanedData.match(/lt:(\d+\.\d+)\s+lg:(\d+\.\d+)/);
+            // Debug the cleaned string structure
+            const latLngMatch = cleanedData.match(/lt:\s*(\d+\.\d+)\s+lg:\s*(\d+\.\d+)/);  // Adjust for optional spaces around the colons
             if (latLngMatch) {
                 const lat = parseFloat(latLngMatch[1]);
                 const lng = parseFloat(latLngMatch[2]);
@@ -41,13 +41,14 @@ function fetchRoverPosition() {
                 // Update the rover marker position
                 roverMarker.setLatLng([lat, lng]).update();
             } else {
-                console.error("Error: Failed to parse latitude and longitude from the string");
+                console.error("Error: Failed to parse latitude and longitude from the string. Cleaned string:", cleanedData);
             }
         })
         .catch(error => {
             console.error('Error fetching rover position:', error);
         });
 }
+
 
 
 setInterval(fetchRoverPosition, 5000);
