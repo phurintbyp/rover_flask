@@ -16,6 +16,35 @@ function resetCoords(){
     fetch(`/reset_coords`);
 }
 
+function fetchRoverPosition() {
+    fetch('/get_position')  // Replace with your API endpoint for the rover position
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch rover position');
+            }
+            return response.json();
+        })
+        .then(data => {
+
+            const cleanedData = data.replace(/[^\x20-\x7E]/g, '');  // Keep only printable ASCII characters
+
+            const latLngMatch = cleanedData.match(/lt:\s*(\d+\.\d+)\s+lg:\s*(\d+\.\d+)/);  // Adjust for optional spaces around the colons
+            if (latLngMatch) {
+                const lat = parseFloat(latLngMatch[1]);
+                const lng = parseFloat(latLngMatch[2]);
+                console.log(`New rover position: lat=${lat}, lng=${lng}`);
+
+                // Update the rover marker position
+                roverMarker.setLatLng([lat, lng]).update();
+            } else {
+                console.error("Error: Failed to parse latitude and longitude from the string. Cleaned string:", cleanedData);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching rover position:', error);
+        });
+}
+
 // Button functions
 
 let keyPressed = {};  // To track which keys are currently pressed
@@ -46,6 +75,8 @@ document.addEventListener('keydown', function(event) {
             if (button) {
                 button.style.backgroundColor = '#0056b3';
             }
+
+            sendCommand(key);
         }
     }
 });
@@ -87,6 +118,8 @@ function handleButtonPress(command, buttonId) {
         if (button) {
             button.style.backgroundColor = '#0056b3';  // Optional: Change button appearance
         }
+
+        sendCommand(command);
     }
 }
 
@@ -305,6 +338,35 @@ function disableDrawControl() {
     map.off("draw:deleted");
 }
 
+function sendDiameter() {
+    const diameterInput = document.getElementById('diameter');
+    const diameter = parseInt(diameterInput.value, 10);
+
+    // Prepare the data to send
+    const requestData = {
+        diameter: (diameter.toString())
+    };
+
+    // Send the diameter to the server
+    fetch('/send_diameter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Diameter sent successfully!');
+        } else {
+            console.error('Failed to send diameter');
+        }
+    })
+    .catch(error => {
+        console.error('Error sending diameter:', error);
+    });
+}
+
 // Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -364,22 +426,23 @@ function disableClickControl() {
 disableInputs();
 
 function enableInputs() {
-    document.getElementById('quality').disabled = true;
-    document.getElementById('getValueButton').disabled = true;
-    document.getElementById('generateButton').disabled = true;
+    document.getElementById('quality').disabled = false;
+    document.getElementById('getValueButton').disabled = false;
+    document.getElementById('generateButton').disabled = false;
     map.addControl(drawControl);
 }
 
 // Function to disable the Quality input and Get Value button
 function disableInputs() {
-    document.getElementById('quality').disabled = false;
-    document.getElementById('getValueButton').disabled = false;
-    document.getElementById('generateButton').disabled = false;
+    document.getElementById('quality').disabled = true;
+    document.getElementById('getValueButton').disabled = true;
+    document.getElementById('generateButton').disabled = true;
     map.removeControl(drawControl);
 }
 
 // Fetch Temperature
 let temperatureInterval;
+let positionInterval;
 
 function fetchTemperature() {
     fetch('/temperature')
@@ -401,12 +464,14 @@ function fetchTemperature() {
 
 function startTemperatureFetch() {
     temperatureInterval = setInterval(fetchTemperature, 5000);  // Fetch every 5 seconds
+    positionInterval = setInterval(fetchRoverPosition, 5000);
 }
 
-function stopTemperatureFetch() {
+function stopTemperatureFetch() { 
     if (temperatureInterval) {
         clearInterval(temperatureInterval);
-        console.log('Stopped fetching temperature');
+        clearInterval(positionInterval);
+        console.log('Stopped fetching temperature and position');
     }
 }
 
