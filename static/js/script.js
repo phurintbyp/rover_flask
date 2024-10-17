@@ -16,6 +16,28 @@ function resetCoords(){
     fetch(`/reset_coords`);
 }
 
+function fetchRoverPosition() {
+    fetch('/get_position')  // Replace with your API endpoint for the rover position
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch rover position');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const { lat, lng } = data;  // Assuming the API returns {lat: ..., lng: ...}
+            console.log(`New rover position: lat=${lat}, lng=${lng}`);
+
+            // Update the rover marker position
+            // roverMarker.setLatLng([lat, lng]).update();
+        })
+        .catch(error => {
+            console.error('Error fetching rover position:', error);
+        });
+}
+
+setInterval(fetchRoverPosition, 5000);
+
 // Button functions
 
 let keyPressed = {};  // To track which keys are currently pressed
@@ -403,7 +425,7 @@ function startTemperatureFetch() {
     temperatureInterval = setInterval(fetchTemperature, 5000);  // Fetch every 5 seconds
 }
 
-function stopTemperatureFetch() {
+function stopTemperatureFetch() { 
     if (temperatureInterval) {
         clearInterval(temperatureInterval);
         console.log('Stopped fetching temperature');

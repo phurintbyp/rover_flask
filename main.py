@@ -122,6 +122,16 @@ def temperature():
     temp = get_temperature()
     return jsonify({'temperature': temp})
 
+@app.route('/get_position')
+def request_data():
+    try:
+        data = bus.read_i2c_block_data(ARDUINO_ADDRESS, 0, 32)
+        received_string = ''.join([chr(b) for b in data if b != 0])
+        print(f"Received: {received_string}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
 if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=5000, debug=False)
