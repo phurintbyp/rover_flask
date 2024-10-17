@@ -122,14 +122,17 @@ def temperature():
     temp = get_temperature()
     return jsonify({'temperature': temp})
 
-@app.route('/get_position')
-def request_data():
+@app.route('/get_position', methods=['GET'])
+def get_position():
     try:
-        data = bus.read_i2c_block_data(ARDUINO_ADDRESS, 0, 32)
-        received_string = ''.join([chr(b) for b in data if b != 0])
-        print(f"Received: {received_string}")
+        rover_position = {
+            'lt': 13.7776,
+            'lg': 100.3456
+        }
+        return jsonify(rover_position)
     except Exception as e:
-        print(f"Error: {e}")
+        return jsonify({'error': str(e)}), 500  # Return error message with HTTP 500 status
+
 
 
 if __name__ == '__main__':

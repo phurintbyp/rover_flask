@@ -25,8 +25,8 @@ function fetchRoverPosition() {
             return response.json();
         })
         .then(data => {
-            const { lat, lng } = data;  // Assuming the API returns {lat: ..., lng: ...}
-            console.log(`New rover position: lat=${lat}, lng=${lng}`);
+            const { lt, lg } = data;  // Assuming the API returns {lat: ..., lng: ...}
+            console.log(`New rover position: lat=${lt}, lng=${lg}`);
 
             // Update the rover marker position
             // roverMarker.setLatLng([lat, lng]).update();

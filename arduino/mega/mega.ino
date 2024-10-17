@@ -15,7 +15,7 @@ int maxIndex = 0;
 int coordIndex = 0;
 bool sendCoordinates = false;
 
-String latLngData = "lat: 13.7776 lng: 100.3456";
+String latLngData = "lt: 13.7776 lg: 100.3456";
 
 void setup() {
   Wire.begin(SLAVE_ADDRESS);  // Join I2C bus as a slave with address 0x08
@@ -42,7 +42,7 @@ void receiveData(int byteCount) {
   if (receivedData.length() != 1){
     if (receivedData.startsWith("max")){
       parseMaxIndex(receivedData);
-    } else{
+    } else if(receivedData.startsWith("lat")){
       parseAndStoreCoordinates(receivedData);
       Serial.println(receivedData);
     }
