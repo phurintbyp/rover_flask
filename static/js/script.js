@@ -364,18 +364,18 @@ function disableClickControl() {
 disableInputs();
 
 function enableInputs() {
-    document.getElementById('quality').disabled = true;
-    document.getElementById('getValueButton').disabled = true;
-    document.getElementById('generateButton').disabled = true;
-    map.removeControl(drawControl);
-}
-
-// Function to disable the Quality input and Get Value button
-function disableInputs() {
     document.getElementById('quality').disabled = false;
     document.getElementById('getValueButton').disabled = false;
     document.getElementById('generateButton').disabled = false;
     map.addControl(drawControl);
+}
+
+// Function to disable the Quality input and Get Value button
+function disableInputs() {
+    document.getElementById('quality').disabled = true;
+    document.getElementById('getValueButton').disabled = true;
+    document.getElementById('generateButton').disabled = true;
+    map.removeControl(drawControl);
 }
 
 // Fetch Temperature
