@@ -141,7 +141,7 @@ def send_diameter():
 
         if diameter is not None:
             # Use your existing send_string function to send the diameter over I2C
-            send_string(diameter)  # Send diameter to the Arduino via I2C
+            send_string(f"dia: {diameter}")  # Send diameter to the Arduino via I2C
             return jsonify({'status': 'success'}), 200
         else:
             return jsonify({'error': 'No diameter provided'}), 400
