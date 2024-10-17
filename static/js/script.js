@@ -340,7 +340,7 @@ function sendDiameter() {
 
     // Prepare the data to send
     const requestData = {
-        diameter: diameter.toString()
+        diameter: ("dia: ", diameter.toString())
     };
 
     // Send the diameter to the server
