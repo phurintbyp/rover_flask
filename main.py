@@ -125,7 +125,7 @@ def temperature():
 @app.route('/get_position', methods=['GET'])
 def get_position():
     try:
-        data = bus.read_i2c_block_data(I2C_SLAVE_ADDRESS, 0, 32)
+        data = bus.read_i2c_block_data(ARDUINO_ADDRESS, 0, 32)
         
         # Convert the received bytes into a string
         received_string = ''.join([chr(b) for b in data if b != 0])
