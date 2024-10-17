@@ -45,10 +45,6 @@ function fetchRoverPosition() {
         });
 }
 
-
-
-setInterval(fetchRoverPosition, 5000);
-
 // Button functions
 
 let keyPressed = {};  // To track which keys are currently pressed
@@ -413,6 +409,7 @@ function disableInputs() {
 
 // Fetch Temperature
 let temperatureInterval;
+let positionInterval;
 
 function fetchTemperature() {
     fetch('/temperature')
@@ -434,12 +431,14 @@ function fetchTemperature() {
 
 function startTemperatureFetch() {
     temperatureInterval = setInterval(fetchTemperature, 5000);  // Fetch every 5 seconds
+    positionInterval = setInterval(fetchRoverPosition, 5000);
 }
 
 function stopTemperatureFetch() { 
     if (temperatureInterval) {
         clearInterval(temperatureInterval);
-        console.log('Stopped fetching temperature');
+        clearInterval(positionInterval);
+        console.log('Stopped fetching temperature and position');
     }
 }
 
