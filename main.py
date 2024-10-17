@@ -11,12 +11,12 @@ ARDUINO_ADDRESS = 0x08
 bus = smbus2.SMBus(1)  # Initialize the bus here
 
 coords_list = []
-
 def send_data(data):
-    bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, [ord(data)])  # Send the single character as its ASCII value
-
-def send_string(data):
-    ascii_values = [ord(char) for char in data]
+    """Send a single character or string over I2C."""
+    if isinstance(data, str):
+        ascii_values = [ord(char) for char in data]
+    else:
+        ascii_values = [ord(data)]  # For single characters
     bus.write_i2c_block_data(ARDUINO_ADDRESS, 0, ascii_values)
 
 # Initialize the camera
@@ -74,7 +74,7 @@ def send_coords(max):
     
     # Send max index
     array_max = f"max: {max}"
-    send_string(array_max)
+    send_data(array_max)
     # Sort coordinates by index
     sorted_coords = sorted(coords_list, key=lambda x: x[0])
 
@@ -84,7 +84,7 @@ def send_coords(max):
         # Format as string before sending
         data_str = f"{coord[0]} {coord[1]} {coord[2]}"
         print(f"Sending: {data_str}")
-        send_string(data_str)
+        send_data(data_str)
 
     return "All coordinates sent!"
 
@@ -141,7 +141,7 @@ def send_diameter():
 
         if diameter is not None:
             # Use your existing send_string function to send the diameter over I2C
-            send_string(f"dia: {diameter}")  # Send diameter to the Arduino via I2C
+            send_data(f"dia: {diameter}")  # Send diameter to the Arduino via I2C
             return jsonify({'status': 'success'}), 200
         else:
             return jsonify({'error': 'No diameter provided'}), 400
