@@ -25,10 +25,14 @@ function fetchRoverPosition() {
             return response.json();
         })
         .then(data => {
-            console.log("Received data:", data);
+            console.log("Original data received:", data);
 
-            // Extract lat and lng from the string (assuming it's in the format "lt:13.7776 lg:100.3456")
-            const latLngMatch = data.match(/lt:(\d+\.\d+)\s+lg:(\d+\.\d+)/);
+            // Remove non-ASCII characters (like 'ÿ') from the received string
+            const cleanedData = data.replace(/[^\x20-\x7E]/g, '');  // Keep only printable ASCII characters
+            console.log("Cleaned data:", cleanedData);
+
+            // Extract lat and lng from the cleaned string (assuming it's in the format "lt:13.7776 lg:100.3456")
+            const latLngMatch = cleanedData.match(/lt:(\d+\.\d+)\s+lg:(\d+\.\d+)/);
             if (latLngMatch) {
                 const lat = parseFloat(latLngMatch[1]);
                 const lng = parseFloat(latLngMatch[2]);
@@ -44,6 +48,7 @@ function fetchRoverPosition() {
             console.error('Error fetching rover position:', error);
         });
 }
+
 
 setInterval(fetchRoverPosition, 5000);
 
