@@ -366,7 +366,6 @@ disableInputs();
 function enableInputs() {
     document.getElementById('quality').disabled = true;
     document.getElementById('getValueButton').disabled = true;
-    document.getElementById('generateButton').disabled = true;
     map.addControl(drawControl);
 }
 
@@ -374,7 +373,6 @@ function enableInputs() {
 function disableInputs() {
     document.getElementById('quality').disabled = false;
     document.getElementById('getValueButton').disabled = false;
-    document.getElementById('generateButton').disabled = false;
     map.removeControl(drawControl);
 }
 
