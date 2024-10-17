@@ -75,6 +75,8 @@ document.addEventListener('keydown', function(event) {
             if (button) {
                 button.style.backgroundColor = '#0056b3';
             }
+
+            sendCommand(key);
         }
     }
 });
@@ -116,6 +118,8 @@ function handleButtonPress(command, buttonId) {
         if (button) {
             button.style.backgroundColor = '#0056b3';  // Optional: Change button appearance
         }
+
+        sendCommand(command);
     }
 }
 
