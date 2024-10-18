@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, jsonify, request  # Import jsonify
+from flask import Flask, render_template, Response, jsonify, request
 from picamera2 import Picamera2
 import cv2
 import smbus2
@@ -92,19 +92,6 @@ def send_coords(max):
 def reset_coords():
     coords_list.clear()
     return "Coordinates list cleared"
-
-def wait_for_ack():
-    while True:
-        try:
-            # Read a byte from Arduino, assuming it sends '1' when target is reached
-            data = bus.read_byte(ARDUINO_ADDRESS)
-            if data == ord('1'):
-                return True  # Acknowledgement received
-        except:
-            pass
-
-        time.sleep(0.1)
-
 
 @app.route('/video_feed')
 def video_feed():
