@@ -1,15 +1,21 @@
 #include <Wire.h>
-#include "pid_control.h"
 #include <MPU9250.h>
 #include <PID_v1.h>
-#include "motor_control.h"
+#include <math.h>  // Include math library for sqrt, atan2, etc.
+#include <Arduino.h>  // For micros(), delay(), Serial
+#include "motor_control.h"  // Assuming motor control is correctly defined
+#include <L298N.h>
 
 // MPU9250 setup for heading control
 MPU9250 mpu;
 
+#define FORWARD 1
+#define BACKWARD 0
+#define PI 3.14159265358979323846  // Define PI if not defined in environment
+
 // PID control variables
 double Setpoint, Input, Output;
-double Kp = 11, Ki = 0.09, Kd = 10;  // PID coefficients for heading
+double Kp = 11, Ki = 0.09, Kd = 10;  // PID coefficients for heading control
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 
 // GPS-based PID control variables (for coordinates)
@@ -18,7 +24,7 @@ double current_lon = 100.3456; // Placeholder current longitude (to be updated f
 double target_lat, target_lon; // Target GPS coordinates
 
 // Target and current yaw for straight-line movement
-double targetYaw = 0;    // Target yaw (will be set by GPS direction)
+double targetYaw = 0;    // Target yaw (set by GPS direction)
 double currentYaw = 0;   // Current yaw from MPU9250
 
 // Variables to be received via I2C
@@ -33,6 +39,9 @@ double calculateHeading(double lat1, double lon1, double lat2, double lon2);
 
 // Setup function for PID and I2C
 void pidSetup() {
+    // Initialize Serial for debugging output
+    Serial.begin(9600);
+
     // Initialize MPU9250 (connected via I2C)
     if (!mpu.setup(0x68)) {
         Serial.println("MPU9250 connection failed!");
@@ -49,8 +58,6 @@ void pidSetup() {
     Wire.begin(8);  // I2C slave address 8
     Wire.onReceive(receiveI2CData);  // Register function to receive data from master
 
-    // Debugging output
-    Serial.begin(9600);
     Serial.println("PID Setup Complete. Waiting for I2C data...");
 }
 
@@ -113,12 +120,12 @@ void adjustMotorSpeedsForCurvedPath(double correction, int diameter) {
     motorRearLeft.setSpeed(leftSpeed);
     motorRearRight.setSpeed(rightSpeed);
 
-    motorFrontLeft.run(FORWARD);
-    motorFrontRight.run(FORWARD);
-    motorMiddleLeft.run(FORWARD);
-    motorMiddleRight.run(FORWARD);
-    motorRearLeft.run(FORWARD);
-    motorRearRight.run(FORWARD);
+    motorFrontLeft.forward();  // Use the appropriate method for forward movement
+    motorFrontRight.forward();
+    motorMiddleLeft.forward();
+    motorMiddleRight.forward();
+    motorRearLeft.forward();
+    motorRearRight.forward();
 }
 
 // Update GPS target coordinates for navigation
@@ -133,14 +140,14 @@ double calculateHeading(double lat1, double lon1, double lat2, double lon2) {
     double y = sin(dLon) * cos(lat2);
     double x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
     double heading = atan2(y, x);
-    heading = heading * 180 / M_PI;
+    heading = heading * 180 / PI;
     if (heading < 0) {
         heading += 360;
     }
     return heading;
 }
 
-void loop() {
+void pidLoop() {
     // Continuously update the PID based on GPS and IMU data
     updatePID();
     

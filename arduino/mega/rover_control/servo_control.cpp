@@ -1,5 +1,7 @@
 #include "servo_control.h"
 #include <Servo.h>
+#include <math.h>
+#include <Arduino.h>
 
 // Define servos for each of the 6 wheels
 Servo servo1, servo2, servo3, servo4, servo5, servo6;
@@ -62,7 +64,7 @@ void adjustZeroRadiusSteering() {
     servo4.write(90);   // Middle Right (Straight)
 }
 
-// Adjust steering for lateral movement (90-degree turn for side movement)
+// Adjust all wheels for lateral parking (side movement)
 void adjustLateralParkingSteering() {
     servo1.write(90);  // All wheels turn 90 degrees for side movement
     servo2.write(90);
@@ -70,4 +72,30 @@ void adjustLateralParkingSteering() {
     servo4.write(90);
     servo5.write(90);
     servo6.write(90);
+}
+
+// Crab steering left (all wheels move left)
+void crabServoLeft() {
+    servo1.write(180);  // Front Left
+    servo2.write(180);  // Front Right
+    servo3.write(180);  // Middle Left
+    servo4.write(180);  // Middle Right
+    servo5.write(180);  // Rear Left
+    servo6.write(180);  // Rear Right
+
+    // This aligns all wheels to steer the rover left without changing orientation.
+    Serial.println("Crab Steering Left");
+}
+
+// Crab steering right (all wheels move right)
+void crabServoRight() {
+    servo1.write(0);  // Front Left
+    servo2.write(0);  // Front Right
+    servo3.write(0);  // Middle Left
+    servo4.write(0);  // Middle Right
+    servo5.write(0);  // Rear Left
+    servo6.write(0);  // Rear Right
+
+    // This aligns all wheels to steer the rover right without changing orientation.
+    Serial.println("Crab Steering Right");
 }
