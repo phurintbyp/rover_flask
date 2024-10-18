@@ -143,7 +143,7 @@ function handleButtonRelease(command, buttonId) {
     }
 }
 
-const buttons = ['qButton', 'wButton', 'eButton', 'rButton', 'uButton', 'oButton', 'aButton', 'sButton', 'dButton', 'fButton', 'jButton', 'kButton', 'lButton', 'hButton'];
+const buttons = ['qButton', 'wButton', 'eButton', 'rButton', 'uButton', 'oButton', 'aButton', 'sButton', 'dButton', 'fButton', 'kButton', 'hButton'];
 
 buttons.forEach(buttonId => {
     // Get the command from the buttonId (remove 'Button' and convert to lowercase)
