@@ -11,8 +11,8 @@
 L298N motorFrontLeft(2, 3, 4);   // Front Left: ENA = 2, IN1 = 3, IN2 = 4
 L298N motorFrontRight(5, 6, 7);  // Front Right: ENB = 5, IN3 = 6, IN4 = 7
 L298N motorMiddleLeft(8, 9, 10); // Middle Left: ENA = 8, IN1 = 9, IN2 = 10
-L298N motorMiddleRight(11, 12, 13);  // Middle Right: ENB = 11, IN3 = 12, IN4 = 13
-L298N motorRearLeft(14, 15, 16);     // Rear Left: ENA = 14, IN1 = 15, IN2 = 16
+L298N motorMiddleRight(22, 23, 24);  // Middle Right: ENB = 22, IN3 = 23, IN4 = 24
+L298N motorRearLeft(25, 26, 27);     // Rear Left: ENA = 25, IN1 = 26, IN2 = 27
 L298N motorRearRight(17, 18, 19);    // Rear Right: ENB = 17, IN3 = 18, IN4 = 19
 
 int baseSpeed = 150;  // Base speed for all wheels
