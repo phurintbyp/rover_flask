@@ -8,12 +8,12 @@
 #define DEG_TO_RAD 0.01745329252
 
 // Define motor drivers for front, middle, and rear wheels (left and right)
-L298N motorFrontLeft(2, 3, 4);   // Front Left: ENA = 2, IN1 = 3, IN2 = 4
-L298N motorFrontRight(5, 6, 7);  // Front Right: ENB = 5, IN3 = 6, IN4 = 7
-L298N motorMiddleLeft(8, 9, 10); // Middle Left: ENA = 8, IN1 = 9, IN2 = 10
-L298N motorMiddleRight(22, 23, 24);  // Middle Right: ENB = 22, IN3 = 23, IN4 = 24
-L298N motorRearLeft(25, 26, 27);     // Rear Left: ENA = 25, IN1 = 26, IN2 = 27
-L298N motorRearRight(17, 18, 19);    // Rear Right: ENB = 17, IN3 = 18, IN4 = 19
+L298N motorFrontLeft(8, 9, 10);   // Front Left: ENA = 8, IN1 = 9, IN2 = 10
+L298N motorFrontRight(13, 11, 12);  // Front Right: ENB = 13, IN3 = 11, IN4 = 12
+L298N motorMiddleLeft(22, 23, 24); // Middle Left: ENA = 22, IN1 = 23, IN2 = 24
+L298N motorMiddleRight(27, 25, 26);  // Middle Right: ENB = 27, IN3 = 25, IN4 = 26
+L298N motorRearLeft(28, 29, 30);     // Rear Left: ENA = 28, IN1 = 29, IN2 = 30
+L298N motorRearRight(33, 31, 32);    // Rear Right: ENB = 33, IN3 = 31, IN4 = 32
 
 int baseSpeed = 150;  // Base speed for all wheels
 
@@ -156,4 +156,6 @@ void setSteeringMode(SteeringMode mode) {
     currentSteeringMode = mode;
 }
 
+// void calibrate() {
 
+// }

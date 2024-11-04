@@ -8,12 +8,12 @@ Servo servo1, servo2, servo3, servo4, servo5, servo6;
 
 void servoSetup() {
     // Attach servos to pins
-    servo1.attach(11);  // Front Left
-    servo2.attach(12);  // Front Right
-    servo3.attach(13);  // Middle Left
-    servo4.attach(14);  // Middle Right
-    servo5.attach(15);  // Rear Left
-    servo6.attach(16);  // Rear Right
+    servo1.attach(2);  // Front Left
+    servo2.attach(3);  // Front Right
+    servo3.attach(4);  // Middle Left
+    servo4.attach(5);  // Middle Right
+    servo5.attach(6);  // Rear Left
+    servo6.attach(7);  // Rear Right
 }
 
 // Adjust steering angles for front two wheels only (for Front Two-Wheel Steering mode)

@@ -59,6 +59,19 @@ void loop() {
                   setSteeringMode(LATERAL_PARKING);
                   Serial.println("Switched to Lateral Parking Mode");
                   break;
+              case 'c':
+                  Serial.println("Calibrating");
+                  adjustSixWheelInPhaseSteering(90);
+                  adjustSixWheelInPhaseSteering(0);
+                  adjustSixWheelInPhaseSteering(180);
+                  adjustSixWheelInPhaseSteering(90);
+                  delay(500);
+                  moveForward();
+                  delay(500);
+                  moveBackward();
+                  delay(500);
+                  stopMoving();
+                  break;
               default:
                   Serial.println("Unknown command received via I2C");
                   break;

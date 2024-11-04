@@ -480,3 +480,7 @@ window.addEventListener('load', startTemperatureFetch);
 
 // Stop fetching the temperature when the user closes the page or server stops
 window.addEventListener('beforeunload', stopTemperatureFetch);
+
+function calibrate(){
+    sendCommand('c');
+}
